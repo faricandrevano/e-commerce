@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'screens/product_detail_screen.dart';
-import 'screens/cart_screen.dart';
-import 'screens/homescreen.dart';
-import 'shared/theme.dart';
-import 'models/product.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'router.dart'; // Import the router
+import '../shared/theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,29 +11,39 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'E-Commerce App',
+    return MaterialApp.router(
+      routerConfig: router,
       theme: ThemeData(
         primaryColor: blueColor,
-        textTheme: TextTheme(
-          bodyLarge: blackColorStyle,
-          bodyMedium: greyColorStyle,
-          displayLarge: whiteTextStyle.copyWith(fontWeight: bold),
+        textTheme: GoogleFonts.dmSansTextTheme(),
+      ),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home', style: whiteTextStyle.copyWith(fontWeight: bold)),
+        backgroundColor: blueColor,
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            context.go('/profile');
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: blueColor,
+            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+            textStyle: whiteTextStyle.copyWith(fontWeight: bold),
+          ),
+          child: Text('Go to Profile'),
         ),
       ),
-      home: HomeScreen(),
-      onGenerateRoute: (settings) {
-        if (settings.name == ProductDetailScreen.routeName) {
-          final product = settings.arguments as Product;
-          return MaterialPageRoute(
-            builder: (ctx) => ProductDetailScreen(product: product),
-          );
-        }
-        return null;
-      },
-      routes: {
-        CartScreen.routeName: (ctx) => CartScreen(),
-      },
     );
   }
 }
