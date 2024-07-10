@@ -7,8 +7,6 @@ part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(UserLoadingData()) {
-    on<UserEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<UserEvent>((event, emit) {});
   }
 }

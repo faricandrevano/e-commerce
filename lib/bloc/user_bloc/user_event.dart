@@ -5,7 +5,13 @@ sealed class UserEvent extends Equatable {
 }
 
 class UserLoadedEvent extends UserEvent {
-  // const UserLoadedEvent();
   @override
   List<Object> get props => [];
+}
+
+class UserCreateEvent extends UserEvent {
+  const UserCreateEvent(this.item);
+  final dynamic item;
+  @override
+  List<Object> get props => [item];
 }

@@ -1,23 +1,18 @@
-class UserAllModel {
-  UserAllModel(
-      {this.city,
-      this.email,
-      this.firstname,
-      this.lastname,
-      this.password,
-      this.phone,
-      this.street,
-      this.username});
-  String? email, username, password, firstname, lastname, city, street, phone;
+class UserModel {
+  UserModel({
+    this.email,
+    this.password,
+    this.username,
+    this.avatar,
+    this.name,
+  });
+  String? email, username, password, avatar, name;
 
-  UserAllModel.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
-    city = json['city'];
-    firstname = json['firstname'];
-    lastname = json['lastname'];
-    phone = json['phone'];
-    street = json['street'];
     username = json['username'];
     password = json['password'];
+    avatar = json['avatar'];
+    name = json['name'];
   }
 }

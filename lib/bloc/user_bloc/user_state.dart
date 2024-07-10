@@ -4,7 +4,7 @@ sealed class UserState extends Equatable {}
 
 final class UserLoadedData extends UserState {
   UserLoadedData({required this.hasil});
-  final List<UserAllModel> hasil;
+  final List<UserModel> hasil;
   @override
   List<Object> get props => [hasil];
 }
