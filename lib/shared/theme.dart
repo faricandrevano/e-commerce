@@ -6,11 +6,11 @@ Color lightBackgroundYellow = const Color(0xffFFF6E4);
 Color lightBackgroundOrange = const Color(0xffFFECE8);
 Color lightBackgroundPurple = const Color(0xffF1EDFC);
 
-Color blueColor = const Color(0xff3669C9);
+const Color blueColor =  Color(0xff3669C9);
 Color yellowColor = const Color(0xffFFC120);
 Color greenColor = const Color(0xff3A9B7A);
 Color navyColor = const Color(0xff13181F);
-Color whiteColor = const Color(0xffFFFFFF);
+const Color whiteColor =  Color(0xffFFFFFF);
 
 TextStyle whiteTextStyle = GoogleFonts.dmSans(
   color: const Color(0xffFFFFFF),
