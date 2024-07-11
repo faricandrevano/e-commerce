@@ -4,6 +4,8 @@ import 'package:kelompok9_toko_online/bloc/user_bloc/user_bloc.dart';
 import 'package:kelompok9_toko_online/shared/theme.dart';
 import 'package:kelompok9_toko_online/ui/widgets/custom_filled_button.dart';
 import 'package:kelompok9_toko_online/ui/widgets/text_field.dart';
+import 'package:kelompok9_toko_online/ui/widgets/toast_message.dart';
+import 'package:toastification/toastification.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -13,23 +15,23 @@ class RegisterPage extends StatelessWidget {
     TextEditingController controllerName = TextEditingController();
     TextEditingController controllerEmail = TextEditingController();
     TextEditingController controllerPassword = TextEditingController();
+
     return Scaffold(
       body: BlocListener<UserBloc, UserState>(
         listener: (context, state) {
           if (state is UserRegisterData) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Register Success'),
-                backgroundColor: Colors.green,
-              ),
-            );
+            ToastMessage(
+              context: context,
+              type: ToastificationType.success,
+              message: 'Successfully Registration User',
+            ).toastCustom();
+            Navigator.pushNamed(context, '/login');
           } else if (state is UserErrorData) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Error ${state.error}'),
-                backgroundColor: Colors.red,
-              ),
-            );
+            ToastMessage(
+              context: context,
+              type: ToastificationType.error,
+              message: 'Failed Registration User',
+            ).toastCustom();
           }
         },
         child: SingleChildScrollView(
@@ -75,12 +77,8 @@ class RegisterPage extends StatelessWidget {
                 const SizedBox(height: 30),
                 BlocBuilder<UserBloc, UserState>(
                   builder: (context, state) {
-                    if (state is UserLoadingData) {
-                      const CustomFilledButton(
-                        text: CircularProgressIndicator(),
-                      );
-                    } else {
-                      CustomFilledButton(
+                    if (state is UserInitialState) {
+                      return CustomFilledButton(
                         text: Text(
                           'Sign Up',
                           style: whiteTextStyle,
@@ -97,17 +95,44 @@ class RegisterPage extends StatelessWidget {
                                   ),
                                 );
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: 
-                                Text('Please fill in all fields'),
-                              ),
-                            );
+                            ToastMessage(
+                              message: "Value Can't Be Empty",
+                              context: context,
+                              type: ToastificationType.info,
+                            ).toastCustom();
                           }
                         },
                       );
+                    } else if (state is UserLoadingData) {
+                      return const CustomFilledButton(
+                        text: CircularProgressIndicator(),
+                      );
                     }
-                    return Container();
+                    return CustomFilledButton(
+                      text: Text(
+                        'Sign Up',
+                        style: whiteTextStyle,
+                      ),
+                      onPressed: () {
+                        if (controllerName.text.isNotEmpty &
+                            controllerPassword.text.isNotEmpty &
+                            controllerEmail.text.isNotEmpty) {
+                          context.read<UserBloc>().add(
+                                UserCreateEvent(
+                                  nama: controllerName.text,
+                                  email: controllerEmail.text,
+                                  password: controllerPassword.text,
+                                ),
+                              );
+                        } else {
+                          ToastMessage(
+                            message: "Value Can't Be Empty",
+                            context: context,
+                            type: ToastificationType.info,
+                          ).toastCustom();
+                        }
+                      },
+                    );
                   },
                 ),
                 const SizedBox(height: 90),

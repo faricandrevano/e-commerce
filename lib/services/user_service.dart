@@ -32,4 +32,24 @@ class UserService {
       throw Exception(e.toString());
     }
   }
+
+  Future<Authorized> loginUser(Map<String, dynamic> item) async {
+    try {
+      final response = await http.post(
+        Uri.parse('https://api.escuelajs.co/api/v1/auth/login'),
+        body: item,
+      );
+      if (response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        return Authorized.fromJson(data);
+      } else if (response.statusCode == 401) {
+        final data = jsonDecode(response.body);
+        throw Exception(data['message']);
+      } else {
+        throw Exception(response.reasonPhrase);
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }
