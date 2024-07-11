@@ -6,9 +6,11 @@ class CustomTextField extends StatefulWidget {
       {super.key,
       this.obscureText,
       required this.hintText,
-      required this.labelText});
+      required this.labelText,
+      this.contoller});
   final bool? obscureText;
   final String hintText, labelText;
+  final TextEditingController? contoller;
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
@@ -29,6 +31,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
         const SizedBox(height: 20),
         TextFormField(
+          controller: widget.contoller,
           decoration: InputDecoration(
             hintText: widget.hintText.toString(),
             hintStyle: TextStyle(

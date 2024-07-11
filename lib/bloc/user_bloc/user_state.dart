@@ -2,9 +2,9 @@ part of 'user_bloc.dart';
 
 sealed class UserState extends Equatable {}
 
-final class UserLoadedData extends UserState {
-  UserLoadedData({required this.hasil});
-  final List<UserModel> hasil;
+final class UserRegisterData extends UserState {
+  UserRegisterData({required this.hasil});
+  final UserModel hasil;
   @override
   List<Object> get props => [hasil];
 }

@@ -9,9 +9,11 @@ class UserLoadedEvent extends UserEvent {
   List<Object> get props => [];
 }
 
+// ignore: must_be_immutable
 class UserCreateEvent extends UserEvent {
-  const UserCreateEvent(this.item);
-  final dynamic item;
+  UserCreateEvent(
+      {required this.nama, required this.email, required this.password});
+  String nama, email, password;
   @override
-  List<Object> get props => [item];
+  List<Object> get props => [];
 }

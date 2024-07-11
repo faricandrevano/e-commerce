@@ -41,7 +41,10 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 70),
                   CustomFilledButton(
-                    text: 'Sign In',
+                    text: Text(
+                      'Sign In',
+                      style: whiteTextStyle,
+                    ),
                     onPressed: () {
                       Navigator.pushNamed(context, '/register');
                       toastification.show(

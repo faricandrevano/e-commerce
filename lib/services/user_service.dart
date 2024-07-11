@@ -16,15 +16,15 @@ class UserService {
     }
   }
 
-  Future<List<UserModel>> postDataUser(Map<String, dynamic> item) async {
+  Future<UserModel> postDataUser(UserModel item) async {
     try {
       final response = await http.post(
         Uri.parse('https://api.escuelajs.co/api/v1/users/'),
-        body: item,
+        body: item.toJson(),
       );
-      if (response.statusCode == 200) {
-        final List data = jsonDecode(response.body);
-        return data.map((e) => UserModel.fromJson(e)).toList();
+      if (response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        return UserModel.fromJson(data);
       } else {
         throw Exception(response.reasonPhrase);
       }

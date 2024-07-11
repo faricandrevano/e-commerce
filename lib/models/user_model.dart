@@ -10,9 +10,16 @@ class UserModel {
 
   UserModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
-    username = json['username'];
     password = json['password'];
     avatar = json['avatar'];
     name = json['name'];
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'email': email,
+      'name': name,
+      'password': password,
+      'avatar': avatar
+    };
   }
 }
