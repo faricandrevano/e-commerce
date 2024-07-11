@@ -18,13 +18,12 @@ class LoginPage extends StatelessWidget {
       body: BlocListener<UserBloc, UserState>(
         listener: (context, state) {
           if (state is UserLoginData) {
-            print(state.hasil);
+            Navigator.pushNamed(context, '/home');
             ToastMessage(
               context: context,
               message: 'Successfully Login User',
               type: ToastificationType.success,
             ).toastCustom();
-            Navigator.pushNamed(context, '/product');
           } else if (state is UserLoginError) {
             ToastMessage(
               context: context,
@@ -79,7 +78,7 @@ class LoginPage extends StatelessWidget {
                                   controllerEmail.text.isNotEmpty) {
                                 context.read<UserBloc>().add(
                                       UserLoginEvent(
-                                        email: controllerPassword.text,
+                                        email: controllerEmail.text,
                                         password: controllerPassword.text,
                                       ),
                                     );

@@ -12,7 +12,7 @@ class ToastMessage {
       context: context,
       type: type,
       style: ToastificationStyle.flatColored,
-      title: const Text('Mega Mall'),
+      title: const Text('Mega Shop'),
       description: Text(message.toString()),
       alignment: Alignment.topCenter,
       autoCloseDuration: const Duration(seconds: 4),

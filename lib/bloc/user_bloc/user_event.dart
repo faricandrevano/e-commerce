@@ -25,3 +25,22 @@ class UserLoginEvent extends UserEvent {
   @override
   List<Object> get props => [];
 }
+
+// ignore: must_be_immutable
+class UserUpdateEvent extends UserEvent {
+  UserUpdateEvent(
+      {required this.email, required this.name, required this.password});
+  String email, password, name;
+  @override
+  List<Object> get props => [];
+}
+
+class UserGetProfileEvent extends UserEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class UserLogoutEvent extends UserEvent {
+  @override
+  List<Object> get props => [];
+}

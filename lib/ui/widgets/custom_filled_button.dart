@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:kelompok9_toko_online/shared/theme.dart';
 
 class CustomFilledButton extends StatelessWidget {
-  const CustomFilledButton({super.key, this.onPressed, required this.text});
+  const CustomFilledButton(
+      {super.key, this.onPressed, required this.text, this.color});
   final VoidCallback? onPressed;
   final Widget text;
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -14,7 +16,7 @@ class CustomFilledButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          backgroundColor: blueColor,
+          backgroundColor: color ?? blueColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

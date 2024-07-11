@@ -5,6 +5,7 @@ class Product {
   final String category;
   final String image;
   final double price;
+  final double rating; // Tambahkan field rating
 
   Product({
     required this.id,
@@ -13,6 +14,7 @@ class Product {
     required this.category,
     required this.image,
     required this.price,
+    required this.rating, // Tambahkan field rating
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class Product {
       category: json['category'],
       image: json['image'],
       price: json['price'].toDouble(),
+      rating: json['rating']['rate'].toDouble(), // Ambil rating dari JSON
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/product_bloc/product_bloc.dart';
 import 'package:kelompok9_toko_online/ui/widgets/banner_carousel.dart';
 import 'package:kelompok9_toko_online/ui/widgets/categories.dart';
+import 'package:kelompok9_toko_online/ui/pages/product_detail.dart';
 import 'package:kelompok9_toko_online/ui/widgets/product_bar.dart';
 import 'package:kelompok9_toko_online/shared/theme.dart';
 
@@ -37,11 +38,7 @@ class ProductListPage extends StatelessWidget {
                             border: InputBorder.none,
                             hintText: 'Search Product Name',
                             hintStyle: TextStyle(
-                              fontSize: 14,
-                              color: Color(
-                                0xFFC4C5C4,
-                              ),
-                            ),
+                                fontSize: 14, color: Color(0xFFC4C5C4)),
                           ),
                         ),
                       ),
@@ -60,26 +57,20 @@ class ProductListPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
-                    'Categories',
-                    style: blackColorStyle.copyWith(
-                      fontWeight: medium,
-                      fontSize: 16,
-                      height: 0.10,
-                      letterSpacing: 0.06,
-                    ),
-                  ),
+                  child: Text('Categories',
+                      style: blackColorStyle.copyWith(
+                          fontWeight: medium,
+                          fontSize: 16,
+                          height: 0.10,
+                          letterSpacing: 0.06)),
                 ),
                 const Spacer(),
-                Text(
-                  'See All',
-                  style: blueColorStyle.copyWith(
-                    fontWeight: medium,
-                    fontSize: 12,
-                    height: 0.15,
-                    letterSpacing: 0.05,
-                  ),
-                )
+                Text('See All',
+                    style: blueColorStyle.copyWith(
+                        fontWeight: medium,
+                        fontSize: 12,
+                        height: 0.15,
+                        letterSpacing: 0.05))
               ],
             ),
           ),
@@ -111,14 +102,12 @@ class ProductListPage extends StatelessWidget {
                       const Spacer(),
                       Container(
                         margin: const EdgeInsets.only(right: 5),
-                        child: Text(
-                          'See All',
-                          style: blueColorStyle.copyWith(
-                              fontWeight: medium,
-                              fontSize: 12,
-                              height: 0.15,
-                              letterSpacing: 0.05),
-                        ),
+                        child: Text('See All',
+                            style: blueColorStyle.copyWith(
+                                fontWeight: medium,
+                                fontSize: 12,
+                                height: 0.15,
+                                letterSpacing: 0.05)),
                       ),
                     ],
                   ),
@@ -146,125 +135,12 @@ class ProductListPage extends StatelessWidget {
                               final product = state.products[index];
                               return InkWell(
                                 onTap: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) {
-                                      return FractionallySizedBox(
-                                        heightFactor: 0.75,
-                                        child: Container(
-                                          padding: const EdgeInsets.only(
-                                            right: 25,
-                                            left: 25,
-                                            bottom: 25,
-                                            top: 25,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    'Add to Cart',
-                                                    style: blackColorStyle
-                                                        .copyWith(
-                                                      fontWeight: bold,
-                                                      fontSize: 20,
-                                                    ),
-                                                  ),
-                                                  const Spacer(),
-                                                  GestureDetector(
-                                                    onTap: () =>
-                                                        Navigator.pop(context),
-                                                    child: const Icon(
-                                                      Icons.close,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              const SizedBox(height: 20),
-                                              const Divider(
-                                                thickness: 0.5,
-                                              ),
-                                              const SizedBox(height: 20),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    'Quantity',
-                                                    style: blackColorStyle
-                                                        .copyWith(
-                                                      fontWeight: medium,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                  const Spacer(),
-                                                  SizedBox(
-                                                    width: 95,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        const Icon(
-                                                          Icons.remove,
-                                                          color: Colors.grey,
-                                                        ),
-                                                        Text(
-                                                          '1',
-                                                          style: blackColorStyle
-                                                              .copyWith(
-                                                            fontWeight: bold,
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                        const Icon(
-                                                          Icons.add,
-                                                          color: blueColor,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              const SizedBox(height: 20),
-                                              const Divider(
-                                                thickness: 0.5,
-                                              ),
-                                              const SizedBox(height: 20),
-                                              Text(
-                                                'Total Belanja',
-                                                style: blackColorStyle.copyWith(
-                                                  fontWeight: medium,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 10),
-                                              Text(
-                                                'Rp 1.500.000',
-                                                style: blackColorStyle.copyWith(
-                                                  fontSize: 14,
-                                                  fontWeight: bold,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 20),
-                                              SizedBox(
-                                                width: double.infinity,
-                                                child: ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor: blueColor,
-                                                  ),
-                                                  onPressed: () {},
-                                                  child: Text(
-                                                    'Add to card',
-                                                    style: whiteTextStyle,
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProductDetailPage(product: product),
+                                    ),
                                   );
                                 },
                                 child: Card(
@@ -280,7 +156,9 @@ class ProductListPage extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.stretch,
                                       children: [
-                                        SizedBox(
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(top: 10),
                                           height: 120,
                                           child: Image.network(
                                             product.image,
@@ -294,15 +172,38 @@ class ProductListPage extends StatelessWidget {
                                             fontSize: 12,
                                             fontWeight: bold,
                                           ),
-                                          maxLines: 5,
+                                          maxLines: 4,
                                         ),
                                         const SizedBox(height: 4),
-                                        Text(
-                                          'Rp. ${product.price}',
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey[600],
-                                          ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Rp. ${product.price}',
+                                              style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.grey[600],
+                                              ),
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.star,
+                                                  color: Colors.yellow,
+                                                  size: 12,
+                                                ),
+                                                const SizedBox(width: 4),
+                                                Text(
+                                                  '${product.rating}',
+                                                  style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
