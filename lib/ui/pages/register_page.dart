@@ -30,7 +30,7 @@ class RegisterPage extends StatelessWidget {
             ToastMessage(
               context: context,
               type: ToastificationType.error,
-              message: 'Failed Registration User',
+              message: 'Email invalid',
             ).toastCustom();
           }
         },

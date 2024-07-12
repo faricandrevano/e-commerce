@@ -15,6 +15,7 @@ class ProductDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
         title: Text(
           'Detail Product',

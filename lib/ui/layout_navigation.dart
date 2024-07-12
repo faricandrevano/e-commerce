@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/cart_bloc/cart_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/user_bloc/user_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/whislist_bloc/whislist_bloc.dart';
+import 'package:kelompok9_toko_online/shared/theme.dart';
 import 'package:kelompok9_toko_online/ui/pages/cart_page.dart';
 import 'package:kelompok9_toko_online/ui/pages/product_list.dart';
 import 'package:kelompok9_toko_online/ui/pages/profile_page.dart';
@@ -34,8 +35,10 @@ class _LayoutNavigationState extends State<LayoutNavigation> {
     final countCart = context.watch<CartBloc>();
     final countWhislist = context.watch<WhislistBloc>();
     return Scaffold(
+      backgroundColor: whiteColor,
       body: page[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: whiteColor,
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         onTap: (value) {
