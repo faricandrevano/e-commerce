@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/cart_bloc/cart_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/whislist_bloc/whislist_bloc.dart';
+import 'package:kelompok9_toko_online/models/cart_model.dart';
 import 'package:kelompok9_toko_online/models/product_model.dart';
 import 'package:kelompok9_toko_online/shared/theme.dart';
 import 'package:kelompok9_toko_online/ui/widgets/toast_message.dart';
@@ -172,10 +173,18 @@ class ProductDetailPage extends StatelessWidget {
                                             message: 'Product Already Exist',
                                           ).toastCustom();
                                         } else {
+                                          final CartModel cart = CartModel(
+                                              id: product.id,
+                                              title: product.title,
+                                              description: product.description,
+                                              category: product.category,
+                                              image: product.image,
+                                              price: product.price,
+                                              rating: product.rating,
+                                              qty: 1);
                                           final whilistbloc =
                                               context.read<WhislistBloc>();
-                                          whilistbloc
-                                              .add(AddToWhislist(product));
+                                          whilistbloc.add(AddToWhislist(cart));
                                           ToastMessage(
                                                   context: context,
                                                   message:
@@ -288,9 +297,18 @@ class ProductDetailPage extends StatelessWidget {
                                             message: 'Product Already Exist',
                                           ).toastCustom();
                                         } else {
+                                          final CartModel cart = CartModel(
+                                              id: product.id,
+                                              title: product.title,
+                                              description: product.description,
+                                              category: product.category,
+                                              image: product.image,
+                                              price: product.price,
+                                              rating: product.rating,
+                                              qty: 1);
                                           final cartbloc =
                                               context.read<CartBloc>();
-                                          cartbloc.add(AddToCart(product));
+                                          cartbloc.add(AddToCart(cart));
                                           ToastMessage(
                                                   context: context,
                                                   message:

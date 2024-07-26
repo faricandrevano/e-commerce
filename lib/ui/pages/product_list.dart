@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/product_bloc/product_bloc.dart';
+import 'package:kelompok9_toko_online/ui/pages/search_page.dart';
 import 'package:kelompok9_toko_online/ui/widgets/banner_carousel.dart';
 import 'package:kelompok9_toko_online/ui/widgets/categories.dart';
 import 'package:kelompok9_toko_online/ui/pages/product_detail.dart';
@@ -30,16 +31,25 @@ class ProductListPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   child: Row(
                     children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 5),
-                        height: 50,
-                        width: 250,
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Search Product Name',
-                            hintStyle: TextStyle(
-                                fontSize: 14, color: Color(0xFFC4C5C4)),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SearchPage()));
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 5),
+                          height: 50,
+                          width: 250,
+                          child: TextFormField(
+                            enabled: false,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Search Product Name',
+                              hintStyle: TextStyle(
+                                  fontSize: 14, color: Color(0xFFC4C5C4)),
+                            ),
                           ),
                         ),
                       ),
@@ -58,20 +68,26 @@ class ProductListPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Text('Categories',
-                      style: blackColorStyle.copyWith(
-                          fontWeight: medium,
-                          fontSize: 16,
-                          height: 0.10,
-                          letterSpacing: 0.06)),
+                  child: Text(
+                    'Categories',
+                    style: blackColorStyle.copyWith(
+                      fontWeight: medium,
+                      fontSize: 16,
+                      height: 0.10,
+                      letterSpacing: 0.06,
+                    ),
+                  ),
                 ),
                 const Spacer(),
-                Text('See All',
-                    style: blueColorStyle.copyWith(
-                        fontWeight: medium,
-                        fontSize: 12,
-                        height: 0.15,
-                        letterSpacing: 0.05))
+                Text(
+                  'See All',
+                  style: blueColorStyle.copyWith(
+                    fontWeight: medium,
+                    fontSize: 12,
+                    height: 0.15,
+                    letterSpacing: 0.05,
+                  ),
+                )
               ],
             ),
           ),

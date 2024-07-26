@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/whislist_bloc/whislist_bloc.dart';
-import 'package:kelompok9_toko_online/models/product_model.dart';
+import 'package:kelompok9_toko_online/models/cart_model.dart';
 import 'package:kelompok9_toko_online/shared/theme.dart';
 import 'package:kelompok9_toko_online/ui/widgets/toast_message.dart';
 import 'package:toastification/toastification.dart';
@@ -31,7 +31,7 @@ class WhislistPage extends StatelessWidget {
                     height: 20,
                   ),
                   const Text(
-                    'No Product',
+                    'No Whislist',
                     style: TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.bold,
@@ -53,7 +53,7 @@ class WhislistPage extends StatelessWidget {
               ),
             );
           } else {
-            final List<Product> data = state.WhislistItems;
+            final List<CartModel> data = state.WhislistItems;
             return Column(
               children: [
                 Expanded(

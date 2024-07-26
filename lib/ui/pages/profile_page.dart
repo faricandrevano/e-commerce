@@ -81,6 +81,7 @@ class ProfilePage extends StatelessWidget {
                         BlocBuilder<UserBloc, UserState>(
                           builder: (context, state) {
                             return CustomFilledButton(
+                              key: const Key('updateButton'),
                               onPressed: () {
                                 context.read<UserBloc>().add(
                                       UserUpdateEvent(
@@ -114,6 +115,7 @@ class ProfilePage extends StatelessWidget {
                         BlocBuilder<UserBloc, UserState>(
                           builder: (context, state) {
                             return CustomFilledButton(
+                              key: const Key('updateButton'),
                               onPressed: () {
                                 context.read<UserBloc>().add(
                                       UserUpdateEvent(
@@ -178,12 +180,14 @@ class ProfilePage extends StatelessWidget {
     return Column(
       children: [
         CustomTextField(
+          key: const Key('nameField'),
           contoller: controllerName,
           hintText: '',
           labelText: 'Full Name',
         ),
         const SizedBox(height: 30),
         CustomTextField(
+          key: const Key('emailField'),
           contoller: controllerEmail,
           hintText: '',
           labelText: 'Email',

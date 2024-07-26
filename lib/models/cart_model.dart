@@ -1,4 +1,4 @@
-class Product {
+class CartModel {
   final int id;
   final String title;
   final String description;
@@ -8,7 +8,7 @@ class Product {
   final double rating;
   final double qty;
 
-  Product(
+  CartModel(
       {required this.id,
       required this.title,
       required this.description,
@@ -18,8 +18,8 @@ class Product {
       required this.rating,
       required this.qty});
 
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
+  factory CartModel.fromJson(Map<String, dynamic> json) {
+    return CartModel(
         id: json['id'],
         title: json['title'],
         description: json['description'],

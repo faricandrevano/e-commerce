@@ -9,13 +9,13 @@ sealed class CartEvent extends Equatable {
 
 class AddToCart extends CartEvent {
   const AddToCart(this.product);
-  final Product product;
+  final CartModel product;
   @override
   List<Object> get props => [product];
 }
 
 class RemoveCart extends CartEvent {
-  final Product product;
+  final CartModel product;
   const RemoveCart(this.product);
   @override
   List<Object> get props => [product];

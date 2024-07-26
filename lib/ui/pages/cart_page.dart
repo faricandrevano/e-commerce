@@ -1,8 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/cart_bloc/cart_bloc.dart';
-import 'package:kelompok9_toko_online/models/product_model.dart';
+import 'package:kelompok9_toko_online/helper/flutter_notification.dart';
+import 'package:kelompok9_toko_online/models/cart_model.dart';
 import 'package:kelompok9_toko_online/shared/theme.dart';
+import 'package:kelompok9_toko_online/ui/pages/detail_order_page.dart';
 import 'package:kelompok9_toko_online/ui/widgets/custom_filled_button.dart';
 import 'package:kelompok9_toko_online/ui/widgets/toast_message.dart';
 import 'package:toastification/toastification.dart';
@@ -54,7 +58,7 @@ class CartPage extends StatelessWidget {
               ),
             );
           } else {
-            final List<Product> data = state.cartItems;
+            final List<CartModel> data = state.cartItems;
             return Column(
               children: [
                 Expanded(
@@ -68,19 +72,69 @@ class CartPage extends StatelessWidget {
                             data[index].image,
                             width: 50,
                           ),
-                          subtitle: Text('Rp.${data[index].price.toString()}'),
-                          trailing: GestureDetector(
-                            onTap: () {
-                              context.read<CartBloc>().add(
-                                    RemoveCart(
-                                      state.cartItems[index],
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Rp.${data[index].price.toString()}'),
+                              const SizedBox(height: 3),
+                              GestureDetector(
+                                onTap: () {
+                                  final detailProduct = data[index];
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailOrderPage(
+                                        product: detailProduct,
+                                      ),
                                     ),
                                   );
-                              ToastMessage(
+                                },
+                                child: Text(
+                                  "View Detail",
+                                  style: blueColorStyle,
+                                ),
+                              )
+                            ],
+                          ),
+                          isThreeLine: true,
+                          trailing: GestureDetector(
+                            onTap: () {
+                              showDialog(
                                 context: context,
-                                message: 'Success Empty Cart',
-                                type: ToastificationType.success,
-                              ).toastCustom();
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                        'Are you sure remove this product?'),
+                                    // content: const Text('Yakin?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          context.read<CartBloc>().add(
+                                              RemoveCart(
+                                                  state.cartItems[index]));
+                                          Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            '/home',
+                                            (route) => false,
+                                          );
+                                          ToastMessage(
+                                            context: context,
+                                            message: 'Success Remove Cart',
+                                            type: ToastificationType.success,
+                                          ).toastCustom();
+                                        },
+                                        child: const Text('Yes'),
+                                      )
+                                    ],
+                                  );
+                                },
+                              );
                             },
                             child: const Icon(Icons.delete),
                           ),
@@ -90,13 +144,39 @@ class CartPage extends StatelessWidget {
                   ),
                 ),
                 CustomFilledButton(
-                  onPressed: () {
-                    context.read<CartBloc>().add(EmptyCart());
-                    ToastMessage(
+                  onPressed: () async {
+                    showDialog(
                       context: context,
-                      message: 'Success Empty Cart',
-                      type: ToastificationType.success,
-                    ).toastCustom();
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Are you sure Procced Orders?'),
+                          // content: const Text('Yakin?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                context.read<CartBloc>().add(EmptyCart());
+                                await HelperNotification
+                                    .flutterLocalNotificationsPlugin
+                                    .show(
+                                  Random().nextInt(99),
+                                  'Success Checkout Order',
+                                  'Proses Checkout Order',
+                                  HelperNotification.notificationDetails,
+                                );
+                                if (!context.mounted) return;
+                              },
+                              child: const Text('Yes'),
+                            )
+                          ],
+                        );
+                      },
+                    );
                   },
                   text: Text(
                     'Procced to checkout',

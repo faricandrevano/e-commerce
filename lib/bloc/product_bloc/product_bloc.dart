@@ -19,5 +19,33 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(ProductError(e.toString()));
       }
     });
+    on<SearchProducts>((event, emit) async {
+      emit(ProductLoading());
+      try {
+        final title = event.title.toLowerCase();
+
+        final category = event.category?.toLowerCase();
+        final products = await productService.fetchProducts();
+        List<Product> resultProduct = [];
+        if (category != null) {
+          resultProduct = products
+              .where((product) => product.title.toLowerCase().contains(title))
+              .where((product) =>
+                  product.category.toLowerCase().contains(category))
+              .toList();
+        } else {
+          resultProduct = products
+              .where((product) => product.title.toLowerCase().contains(title))
+              .toList();
+        }
+        if (resultProduct.isEmpty) {
+          emit(ProductNothing());
+        } else {
+          emit(ProductLoaded(resultProduct));
+        }
+      } catch (e) {
+        emit(ProductError(e.toString()));
+      }
+    });
   }
 }

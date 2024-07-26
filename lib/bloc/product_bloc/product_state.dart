@@ -1,6 +1,5 @@
 part of 'product_bloc.dart';
 
-
 abstract class ProductState extends Equatable {
   @override
   List<Object> get props => [];
@@ -27,3 +26,5 @@ class ProductError extends ProductState {
   @override
   List<Object> get props => [message];
 }
+
+class ProductNothing extends ProductState {}
