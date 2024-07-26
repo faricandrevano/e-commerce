@@ -3,11 +3,10 @@ class UserModel {
     this.id,
     this.email,
     this.password,
-    this.username,
     this.avatar,
     this.name,
   });
-  String? email, username, password, avatar, name;
+  String? email, password, avatar, name;
   int? id;
   UserModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
