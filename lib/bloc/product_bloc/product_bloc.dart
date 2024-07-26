@@ -30,18 +30,20 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         if (category != null) {
           resultProduct = products
               .where((product) => product.title.toLowerCase().contains(title))
-              .where((product) =>
-                  product.category.toLowerCase().contains(category))
+              .where(
+                  (product) => product.category.toLowerCase() == event.category)
               .toList();
         } else {
           resultProduct = products
-              .where((product) => product.title.toLowerCase().contains(title))
+              .where(
+                (product) => product.title.toLowerCase().contains(title),
+              )
               .toList();
         }
         if (resultProduct.isEmpty) {
           emit(ProductNothing());
         } else {
-          emit(ProductLoaded(resultProduct));
+          emit(ProductSearchLoaded(resultProduct));
         }
       } catch (e) {
         emit(ProductError(e.toString()));

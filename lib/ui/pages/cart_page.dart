@@ -118,11 +118,7 @@ class CartPage extends StatelessWidget {
                                           context.read<CartBloc>().add(
                                               RemoveCart(
                                                   state.cartItems[index]));
-                                          Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            '/home',
-                                            (route) => false,
-                                          );
+                                          Navigator.pop(context);
                                           ToastMessage(
                                             context: context,
                                             message: 'Success Remove Cart',

@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kelompok9_toko_online/models/cart_model.dart';
-
 part 'whislist_event.dart';
 part 'whislist_state.dart';
 

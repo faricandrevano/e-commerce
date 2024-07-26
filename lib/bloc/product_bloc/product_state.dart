@@ -28,3 +28,12 @@ class ProductError extends ProductState {
 }
 
 class ProductNothing extends ProductState {}
+
+class ProductSearchLoaded extends ProductState {
+  final List<Product> products;
+
+  ProductSearchLoaded(this.products);
+
+  @override
+  List<Object> get props => [products];
+}

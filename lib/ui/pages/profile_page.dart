@@ -83,13 +83,40 @@ class ProfilePage extends StatelessWidget {
                             return CustomFilledButton(
                               key: const Key('updateButton'),
                               onPressed: () {
-                                context.read<UserBloc>().add(
-                                      UserUpdateEvent(
-                                        email: controllerEmail!.text,
-                                        name: controllerName!.text,
-                                        password: controllerPassword!.text,
-                                      ),
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                          'Are you sure update profile?'),
+                                      // content: const Text('Yakin?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            context.read<UserBloc>().add(
+                                                  UserUpdateEvent(
+                                                    email:
+                                                        controllerEmail!.text,
+                                                    name: controllerName!.text,
+                                                    password:
+                                                        controllerPassword!
+                                                            .text,
+                                                  ),
+                                                );
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('Yes'),
+                                        )
+                                      ],
                                     );
+                                  },
+                                );
                               },
                               text: Text(
                                 'Update',
@@ -117,13 +144,40 @@ class ProfilePage extends StatelessWidget {
                             return CustomFilledButton(
                               key: const Key('updateButton'),
                               onPressed: () {
-                                context.read<UserBloc>().add(
-                                      UserUpdateEvent(
-                                        email: controllerEmail!.text,
-                                        name: controllerName!.text,
-                                        password: controllerPassword!.text,
-                                      ),
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                          'Are you sure update profile?'),
+                                      // content: const Text('Yakin?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            context.read<UserBloc>().add(
+                                                  UserUpdateEvent(
+                                                    email:
+                                                        controllerEmail!.text,
+                                                    name: controllerName!.text,
+                                                    password:
+                                                        controllerPassword!
+                                                            .text,
+                                                  ),
+                                                );
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('Yes'),
+                                        )
+                                      ],
                                     );
+                                  },
+                                );
                               },
                               text: Text(
                                 'Update',
@@ -160,7 +214,31 @@ class ProfilePage extends StatelessWidget {
                   return CustomFilledButton(
                     color: Colors.red,
                     onPressed: () {
-                      context.read<UserBloc>().add(UserLogoutEvent());
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Are you sure Logout?'),
+                            // content: const Text('Yakin?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  context
+                                      .read<UserBloc>()
+                                      .add(UserLogoutEvent());
+                                },
+                                child: const Text('Yes'),
+                              )
+                            ],
+                          );
+                        },
+                      );
                     },
                     text: Text(
                       'Logout',

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/whislist_bloc/whislist_bloc.dart';
 import 'package:kelompok9_toko_online/models/cart_model.dart';
 import 'package:kelompok9_toko_online/shared/theme.dart';
+import 'package:kelompok9_toko_online/ui/pages/whislist_detail_page.dart';
 import 'package:kelompok9_toko_online/ui/widgets/toast_message.dart';
 import 'package:toastification/toastification.dart';
 
@@ -67,19 +68,67 @@ class WhislistPage extends StatelessWidget {
                             data[index].image,
                             width: 50,
                           ),
-                          subtitle: Text('Rp.${data[index].price.toString()}'),
-                          trailing: GestureDetector(
-                            onTap: () {
-                              context.read<WhislistBloc>().add(
-                                    RemoreWhislist(
-                                      state.WhislistItems[index],
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Rp.${data[index].price.toString()}'),
+                              const SizedBox(height: 3),
+                              GestureDetector(
+                                onTap: () {
+                                  final detailProduct = data[index];
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WhislistDetailPage(
+                                        product: detailProduct,
+                                      ),
                                     ),
                                   );
-                              ToastMessage(
-                                      context: context,
-                                      message: 'Success Remove',
-                                      type: ToastificationType.success)
-                                  .toastCustom();
+                                },
+                                child: Text(
+                                  "View Detail",
+                                  style: blueColorStyle,
+                                ),
+                              )
+                            ],
+                          ),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                        'Are you sure remove this product?'),
+                                    // content: const Text('Yakin?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          context.read<WhislistBloc>().add(
+                                                RemoreWhislist(
+                                                  state.WhislistItems[index],
+                                                ),
+                                              );
+                                          ToastMessage(
+                                                  context: context,
+                                                  message: 'Success Remove',
+                                                  type: ToastificationType
+                                                      .success)
+                                              .toastCustom();
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('Yes'),
+                                      )
+                                    ],
+                                  );
+                                },
+                              );
                             },
                             child: const Icon(Icons.delete),
                           ),

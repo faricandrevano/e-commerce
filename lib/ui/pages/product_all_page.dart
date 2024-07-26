@@ -33,7 +33,7 @@ class ProductAllPage extends StatelessWidget {
                     builder: (context, state) {
                       if (state is ProductLoading) {
                         return const Center(child: CircularProgressIndicator());
-                      } else if (state is ProductLoaded) {
+                      } else if (state is ProductSearchLoaded) {
                         return GridView.builder(
                           padding: EdgeInsets.zero,
                           gridDelegate:
