@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/cart_bloc/cart_bloc.dart';
@@ -5,6 +6,7 @@ import 'package:kelompok9_toko_online/bloc/product_bloc/product_bloc.dart';
 
 import 'package:kelompok9_toko_online/bloc/user_bloc/user_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/whislist_bloc/whislist_bloc.dart';
+import 'package:kelompok9_toko_online/firebase_options.dart';
 import 'package:kelompok9_toko_online/helper/flutter_notification.dart';
 import 'package:kelompok9_toko_online/services/product_services.dart';
 import 'package:kelompok9_toko_online/services/user_service.dart';
@@ -16,6 +18,9 @@ import 'package:kelompok9_toko_online/ui/pages/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HelperNotification().initLocalNotification();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 

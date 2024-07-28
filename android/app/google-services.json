@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "963886785612",
+    "project_id": "e-commerce-16d4b",
+    "storage_bucket": "e-commerce-16d4b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963886785612:android:fe6e133310ded6df1fc0e9",
+        "android_client_info": {
+          "package_name": "com.example.kelompok9_toko_online"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963886785612-45dpk0hmbhv5jn3i1t54cc1d0ec67sd0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYLDsO7LaKwcPJBcqQTtgUcRIhrJxemyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963886785612-45dpk0hmbhv5jn3i1t54cc1d0ec67sd0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "963886785612-hi6p5bdec1ggdjdfg072vp6pqhfu7qst.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.kelompok9TokoOnline"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

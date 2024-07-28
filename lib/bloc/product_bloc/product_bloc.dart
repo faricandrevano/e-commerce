@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kelompok9_toko_online/models/product_model.dart';
@@ -8,13 +9,21 @@ part 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ProductService productService;
+  CollectionReference products =
+      FirebaseFirestore.instance.collection('products');
 
   ProductBloc(this.productService) : super(ProductInitial()) {
     on<FetchProducts>((event, emit) async {
       emit(ProductLoading());
       try {
-        final products = await productService.fetchProducts();
-        emit(ProductLoaded(products));
+        QuerySnapshot querySnapshot = await products.get();
+        List<Product> productsData = querySnapshot.docs.map((doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          data['id'] = doc.id;
+
+          return Product.fromJson(data);
+        }).toList();
+        emit(ProductLoaded(productsData));
       } catch (e) {
         emit(ProductError(e.toString()));
       }
