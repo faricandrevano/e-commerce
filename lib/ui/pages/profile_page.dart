@@ -21,7 +21,7 @@ class ProfilePage extends StatelessWidget {
                     type: ToastificationType.success,
                     message: 'Success Update Profile')
                 .toastCustom();
-          } else if (state is UserUpdateError) {
+          } else if (state is UserErrorData) {
             ToastMessage(
                     context: context,
                     type: ToastificationType.error,
@@ -127,68 +127,7 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ],
                     );
-                  } else if (state is UserUpdateLoaded) {
-                    controllerName =
-                        TextEditingController(text: state.hasil.name);
-                    controllerEmail =
-                        TextEditingController(text: state.hasil.email);
-                    controllerPassword =
-                        TextEditingController(text: state.hasil.password);
-
-                    return Column(
-                      children: [
-                        form(controllerName, controllerEmail,
-                            controllerPassword),
-                        BlocBuilder<UserBloc, UserState>(
-                          builder: (context, state) {
-                            return CustomFilledButton(
-                              key: const Key('updateButton'),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text(
-                                          'Are you sure update profile?'),
-                                      // content: const Text('Yakin?'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            context.read<UserBloc>().add(
-                                                  UserUpdateEvent(
-                                                    email:
-                                                        controllerEmail!.text,
-                                                    name: controllerName!.text,
-                                                    password:
-                                                        controllerPassword!
-                                                            .text,
-                                                  ),
-                                                );
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('Yes'),
-                                        )
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              text: Text(
-                                'Update',
-                                style: whiteTextStyle,
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  } else if (state is UserUpdateLoading) {
+                  } else if (state is UserLoadingData) {
                     return Column(
                       children: [
                         form(controllerName, controllerEmail,

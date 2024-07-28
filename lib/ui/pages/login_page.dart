@@ -24,10 +24,10 @@ class LoginPage extends StatelessWidget {
               message: 'Successfully Login User',
               type: ToastificationType.success,
             ).toastCustom();
-          } else if (state is UserLoginError) {
+          } else if (state is UserErrorData) {
             ToastMessage(
               context: context,
-              message: 'Failed Login User',
+              message: state.error.toString(),
               type: ToastificationType.error,
             ).toastCustom();
           }
@@ -64,35 +64,10 @@ class LoginPage extends StatelessWidget {
                       obscureText: true,
                       contoller: controllerPassword,
                     ),
-                    const SizedBox(height: 70),
+                    const SizedBox(height: 60),
                     BlocBuilder<UserBloc, UserState>(
                       builder: (context, state) {
-                        if (state is UserInitialState) {
-                          CustomFilledButton(
-                            text: Text(
-                              'Sign In',
-                              style: whiteTextStyle,
-                            ),
-                            onPressed: () {
-                              if (controllerPassword.text.isNotEmpty &
-                                  controllerEmail.text.isNotEmpty) {
-                                context.read<UserBloc>().add(
-                                      UserLoginEvent(
-                                        email: controllerEmail.text,
-                                        password: controllerPassword.text,
-                                      ),
-                                    );
-                              } else {
-                                ToastMessage(
-                                  context: context,
-                                  message: "Value Can't Be Empty",
-                                  type: ToastificationType.info,
-                                ).toastCustom();
-                              }
-                              // Navigator.pushNamed(context, '/product');
-                            },
-                          );
-                        } else if (state is UserLoginLoading) {
+                        if (state is UserLoadingData) {
                           return const CustomFilledButton(
                             text: CircularProgressIndicator(),
                           );
@@ -118,34 +93,54 @@ class LoginPage extends StatelessWidget {
                                 type: ToastificationType.info,
                               ).toastCustom();
                             }
+                            // Navigator.pushNamed(context, '/product');
                           },
                         );
                       },
                     ),
                   ],
                 ),
-                const SizedBox(height: 102),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Forgot Password?',
-                      style: blackColorStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: medium,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, '/register'),
-                      child: Text(
-                        'Sign Up',
-                        style: blueColorStyle.copyWith(
-                          fontWeight: medium,
+                const SizedBox(height: 15),
+                const Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Or Sign In with',
+                  ),
+                ),
+                const SizedBox(height: 15),
+                CustomFilledButton(
+                  text: Text(
+                    'Google',
+                    style: whiteTextStyle,
+                  ),
+                  onPressed: () {
+                    context.read<UserBloc>().add(UserSignInGoogle());
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 25),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Forgot Password?',
+                        style: blackColorStyle.copyWith(
                           fontSize: 14,
+                          fontWeight: medium,
                         ),
                       ),
-                    )
-                  ],
+                      GestureDetector(
+                        onTap: () => Navigator.pushNamed(context, '/register'),
+                        child: Text(
+                          'Sign Up',
+                          style: blueColorStyle.copyWith(
+                            fontWeight: medium,
+                            fontSize: 14,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 )
               ],
             ),

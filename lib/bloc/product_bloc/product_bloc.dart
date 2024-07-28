@@ -20,7 +20,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         List<Product> productsData = querySnapshot.docs.map((doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           data['id'] = doc.id;
-
           return Product.fromJson(data);
         }).toList();
         emit(ProductLoaded(productsData));
