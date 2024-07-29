@@ -19,6 +19,12 @@ final class UserLoadingData extends UserState {
   @override
   List<Object> get props => [isLoading];
 }
+final class UserSignInLoading extends UserState {
+  UserSignInLoading(this.isLoading);
+  final bool isLoading;
+  @override
+  List<Object> get props => [isLoading];
+}
 
 final class UserErrorData extends UserState {
   UserErrorData({required this.error});

@@ -33,16 +33,22 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         final title = event.title.toLowerCase();
 
         final category = event.category?.toLowerCase();
-        final products = await productService.fetchProducts();
+        // final products = await productService.fetchProducts();
+        QuerySnapshot queryProducts = await products.get();
         List<Product> resultProduct = [];
+        final List<Product> productData = queryProducts.docs.map((doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          data['id'] = doc.id;
+          return Product.fromJson(data);
+        }).toList();
         if (category != null) {
-          resultProduct = products
+          resultProduct = productData
               .where((product) => product.title.toLowerCase().contains(title))
               .where(
                   (product) => product.category.toLowerCase() == event.category)
               .toList();
         } else {
-          resultProduct = products
+          resultProduct = productData
               .where(
                 (product) => product.title.toLowerCase().contains(title),
               )

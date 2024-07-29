@@ -5,7 +5,6 @@ import 'package:kelompok9_toko_online/shared/theme.dart';
 import 'package:kelompok9_toko_online/ui/pages/product_all_page.dart';
 import 'package:kelompok9_toko_online/ui/widgets/custom_button.dart';
 import 'package:kelompok9_toko_online/ui/widgets/custom_category_list.dart';
-// import 'package:kelompok9_toko_online/ui/widgets/custom_slider.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -88,39 +87,41 @@ class _SearchPageState extends State<SearchPage> {
             Container(
               margin: const EdgeInsets.only(left: 5),
               height: 50,
-              child: TextFormField(
-                onEditingComplete: () {
-                  previousSearchs.add(searchController.text);
-                  context
-                      .read<ProductBloc>()
-                      .add(SearchProducts(title: searchController.text));
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ProductAllPage(),
-                    ),
-                  );
-                },
-                controller: searchController,
-                onChanged: (pure) {
-                  setState(() {});
-                },
-                decoration: InputDecoration(
-                  suffixIcon: searchController.text.isEmpty
-                      ? null
-                      : IconButton(
-                          onPressed: () {
-                            searchController.clear();
-                          },
-                          icon: const Icon(
-                            Icons.cancel_sharp,
+              child: Form(
+                child: TextFormField(
+                  onEditingComplete: () {
+                    previousSearchs.add(searchController.text);
+                    context
+                        .read<ProductBloc>()
+                        .add(SearchProducts(title: searchController.text));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProductAllPage(),
+                      ),
+                    );
+                  },
+                  controller: searchController,
+                  onChanged: (pure) {
+                    setState(() {});
+                  },
+                  decoration: InputDecoration(
+                    suffixIcon: searchController.text.isEmpty
+                        ? null
+                        : IconButton(
+                            onPressed: () {
+                              searchController.clear();
+                            },
+                            icon: const Icon(
+                              Icons.cancel_sharp,
+                            ),
                           ),
-                        ),
-                  prefixIcon: const Icon(Icons.search),
-                  border: InputBorder.none,
-                  hintText: 'Search Product Name',
-                  hintStyle:
-                      const TextStyle(fontSize: 14, color: Color(0xFFC4C5C4)),
+                    prefixIcon: const Icon(Icons.search),
+                    border: InputBorder.none,
+                    hintText: 'Search Product Name',
+                    hintStyle:
+                        const TextStyle(fontSize: 14, color: Color(0xFFC4C5C4)),
+                  ),
                 ),
               ),
             ),

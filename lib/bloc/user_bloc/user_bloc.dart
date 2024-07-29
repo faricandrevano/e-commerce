@@ -3,15 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kelompok9_toko_online/models/user_model.dart';
-import 'package:kelompok9_toko_online/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  final UserService userService;
-  UserBloc({required this.userService}) : super(UserInitialState()) {
+  // final UserService userService;
+  UserBloc() : super(UserInitialState()) {
     on<UserEvent>(
       (event, emit) async {
         if (event is UserCreateEvent) {
@@ -93,7 +92,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           }
         }
         if (event is UserSignInGoogle) {
-          emit(UserLoadingData(true));
+          emit(UserSignInLoading(true));
           try {
             final GoogleSignInAccount? googleUser =
                 await GoogleSignIn().signIn();
@@ -103,7 +102,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
               accessToken: googleAuth?.accessToken,
               idToken: googleAuth?.idToken,
             );
-
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setBool('isLogin', true);
             await FirebaseAuth.instance.signInWithCredential(credential);
             emit(UserLoginData());
           } on FirebaseAuthException catch (e) {

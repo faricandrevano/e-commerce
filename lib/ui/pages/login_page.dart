@@ -108,13 +108,22 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 15),
-                CustomFilledButton(
-                  text: Text(
-                    'Google',
-                    style: whiteTextStyle,
-                  ),
-                  onPressed: () {
-                    context.read<UserBloc>().add(UserSignInGoogle());
+                BlocBuilder<UserBloc, UserState>(
+                  builder: (context, state) {
+                    if (state is UserSignInLoading) {
+                      return const CustomFilledButton(
+                        text: CircularProgressIndicator(),
+                      );
+                    }
+                    return CustomFilledButton(
+                      text: Text(
+                        'Google',
+                        style: whiteTextStyle,
+                      ),
+                      onPressed: () {
+                        context.read<UserBloc>().add(UserSignInGoogle());
+                      },
+                    );
                   },
                 ),
                 Padding(
