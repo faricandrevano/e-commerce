@@ -14,3 +14,5 @@ class SearchProducts extends ProductEvent {
   @override
   List<Object> get props => [title];
 }
+
+class RefreshProduct extends ProductEvent {}

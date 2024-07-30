@@ -161,39 +161,39 @@ class ProductDetailPage extends StatelessWidget {
                                         backgroundColor: blueColor,
                                       ),
                                       onPressed: () {
-                                        final whilistbloc =
-                                            context.read<WhislistBloc>();
-                                        final whilistItems =
-                                            whilistbloc.state.WhislistItems;
-                                        if (whilistItems.any(
-                                            (item) => item.id == product.id)) {
-                                          ToastMessage(
-                                            context: context,
-                                            type: ToastificationType.info,
-                                            message: 'Product Already Exist',
-                                          ).toastCustom();
-                                        } else {
-                                          final CartModel cart = CartModel(
-                                              id: product.id,
-                                              title: product.title,
-                                              description: product.description,
-                                              category: product.category,
-                                              image: product.image,
-                                              price: product.price,
-                                              rating: product.rating,
-                                              qty: 1);
-                                          final whilistbloc =
-                                              context.read<WhislistBloc>();
-                                          whilistbloc.add(AddToWhislist(cart));
-                                          ToastMessage(
-                                                  context: context,
-                                                  message:
-                                                      'Success Add To Whislist',
-                                                  type: ToastificationType
-                                                      .success)
-                                              .toastCustom();
-                                          Navigator.pop(context);
-                                        }
+                                        // final whilistbloc =
+                                        //     context.read<WhislistBloc>();
+                                        // final whilistItems =
+                                        //     whilistbloc.state.WhislistItems;
+                                        // if (whilistItems.any(
+                                        //     (item) => item.id == product.id)) {
+                                        //   ToastMessage(
+                                        //     context: context,
+                                        //     type: ToastificationType.info,
+                                        //     message: 'Product Already Exist',
+                                        //   ).toastCustom();
+                                        // } else {
+                                        //   final CartModel cart = CartModel(
+                                        //       id: product.id,
+                                        //       title: product.title,
+                                        //       description: product.description,
+                                        //       category: product.category,
+                                        //       image: product.image,
+                                        //       price: product.price,
+                                        //       rating: product.rating,
+                                        //       qty: 1);
+                                        //   final whilistbloc =
+                                        //       context.read<WhislistBloc>();
+                                        //   whilistbloc.add(AddToWhislist(cart));
+                                        //   ToastMessage(
+                                        //           context: context,
+                                        //           message:
+                                        //               'Success Add To Whislist',
+                                        //           type: ToastificationType
+                                        //               .success)
+                                        //       .toastCustom();
+                                        //   Navigator.pop(context);
+                                        // }
                                       },
                                       child: Text(
                                         'Add to Favorite',
@@ -285,39 +285,39 @@ class ProductDetailPage extends StatelessWidget {
                                         backgroundColor: blueColor,
                                       ),
                                       onPressed: () {
-                                        final cartbloc =
-                                            context.read<CartBloc>();
-                                        final cartItem =
-                                            cartbloc.state.cartItems;
-                                        if (cartItem.any(
-                                            (item) => item.id == product.id)) {
-                                          ToastMessage(
-                                            context: context,
-                                            type: ToastificationType.info,
-                                            message: 'Product Already Exist',
-                                          ).toastCustom();
-                                        } else {
-                                          final CartModel cart = CartModel(
-                                              id: product.id,
-                                              title: product.title,
-                                              description: product.description,
-                                              category: product.category,
-                                              image: product.image,
-                                              price: product.price,
-                                              rating: product.rating,
-                                              qty: 1);
-                                          final cartbloc =
-                                              context.read<CartBloc>();
-                                          cartbloc.add(AddToCart(cart));
-                                          ToastMessage(
-                                                  context: context,
-                                                  message:
-                                                      'Success Add To cart',
-                                                  type: ToastificationType
-                                                      .success)
-                                              .toastCustom();
-                                          Navigator.pop(context);
-                                        }
+                                        // final cartbloc =
+                                        //     context.read<CartBloc>();
+                                        // final cartItem =
+                                        //     cartbloc.state.cartItems;
+                                        // if (cartItem.any(
+                                        //     (item) => item.id == product.id)) {
+                                        //   ToastMessage(
+                                        //     context: context,
+                                        //     type: ToastificationType.info,
+                                        //     message: 'Product Already Exist',
+                                        //   ).toastCustom();
+                                        // } else {
+                                        //   final CartModel cart = CartModel(
+                                        //       id: product.id,
+                                        //       title: product.title,
+                                        //       description: product.description,
+                                        //       category: product.category,
+                                        //       image: product.image,
+                                        //       price: product.price,
+                                        //       rating: product.rating,
+                                        //       qty: 1);
+                                        //   final cartbloc =
+                                        //       context.read<CartBloc>();
+                                        //   cartbloc.add(AddToCart(cart));
+                                        //   ToastMessage(
+                                        //           context: context,
+                                        //           message:
+                                        //               'Success Add To cart',
+                                        //           type: ToastificationType
+                                        //               .success)
+                                        //       .toastCustom();
+                                        //   Navigator.pop(context);
+                                        // }
                                       },
                                       child: Text(
                                         'Add to card',

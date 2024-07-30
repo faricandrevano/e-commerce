@@ -8,7 +8,6 @@ import 'package:kelompok9_toko_online/bloc/user_bloc/user_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/whislist_bloc/whislist_bloc.dart';
 import 'package:kelompok9_toko_online/firebase_options.dart';
 import 'package:kelompok9_toko_online/helper/flutter_notification.dart';
-import 'package:kelompok9_toko_online/services/product_services.dart';
 import 'package:kelompok9_toko_online/ui/layout_navigation.dart';
 import 'package:kelompok9_toko_online/ui/pages/login_page.dart';
 import 'package:kelompok9_toko_online/ui/pages/register_page.dart';
@@ -26,8 +25,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // final UserService userService = UserService();
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -36,10 +33,7 @@ class MyApp extends StatelessWidget {
           create: (context) => UserBloc(),
         ),
         BlocProvider<ProductBloc>(
-          create: (context) => ProductBloc(ProductService())
-            ..add(
-              FetchProducts(),
-            ),
+          create: (context) => ProductBloc(),
         ),
         BlocProvider<CartBloc>(create: (context) => CartBloc()),
         BlocProvider<WhislistBloc>(create: (context) => WhislistBloc()),

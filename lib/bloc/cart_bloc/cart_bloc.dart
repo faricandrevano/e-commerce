@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kelompok9_toko_online/models/cart_model.dart';
@@ -6,6 +7,7 @@ part 'cart_event.dart';
 part 'cart_state.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
+  CollectionReference carts = FirebaseFirestore.instance.collection('carts');
   CartBloc() : super(CartState([])) {
     on<CartEvent>((event, emit) {
       if (event is AddToCart) {
