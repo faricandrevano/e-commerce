@@ -10,7 +10,7 @@ final class WhilistInitial extends WhislistState {
 
 final class WhislistUpdateData extends WhislistState {
   WhislistUpdateData({required this.data});
-  final List<CartModel> data;
+  final List<WhislistModel> data;
   @override
   List<Object> get props => [data];
 }

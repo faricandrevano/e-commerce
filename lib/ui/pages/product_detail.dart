@@ -4,6 +4,7 @@ import 'package:kelompok9_toko_online/bloc/cart_bloc/cart_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/whislist_bloc/whislist_bloc.dart';
 import 'package:kelompok9_toko_online/models/cart_model.dart';
 import 'package:kelompok9_toko_online/models/product_model.dart';
+import 'package:kelompok9_toko_online/models/whislist_model.dart';
 import 'package:kelompok9_toko_online/shared/theme.dart';
 import 'package:kelompok9_toko_online/ui/widgets/toast_message.dart';
 import 'package:toastification/toastification.dart';
@@ -73,6 +74,7 @@ class ProductDetailPage extends StatelessWidget {
                     message: state.error.toString(),
                     type: ToastificationType.error)
                 .toastCustom();
+            Navigator.pop(context);
           } else if (state is CartSuccess) {
             context.read<CartBloc>().add(FetchCart());
             ToastMessage(
@@ -80,6 +82,7 @@ class ProductDetailPage extends StatelessWidget {
                     message: 'Success Add To cart',
                     type: ToastificationType.success)
                 .toastCustom();
+            Navigator.pop(context);
           }
         },
         child: SingleChildScrollView(
@@ -180,39 +183,21 @@ class ProductDetailPage extends StatelessWidget {
                                           backgroundColor: blueColor,
                                         ),
                                         onPressed: () {
-                                          // final whilistbloc =
-                                          //     context.read<WhislistBloc>();
-                                          // final whilistItems =
-                                          //     whilistbloc.state.WhislistItems;
-                                          // if (whilistItems.any(
-                                          //     (item) => item.id == product.id)) {
-                                          //   ToastMessage(
-                                          //     context: context,
-                                          //     type: ToastificationType.info,
-                                          //     message: 'Product Already Exist',
-                                          //   ).toastCustom();
-                                          // } else {
-                                          //   final CartModel cart = CartModel(
-                                          //       id: product.id,
-                                          //       title: product.title,
-                                          //       description: product.description,
-                                          //       category: product.category,
-                                          //       image: product.image,
-                                          //       price: product.price,
-                                          //       rating: product.rating,
-                                          //       qty: 1);
-                                          //   final whilistbloc =
-                                          //       context.read<WhislistBloc>();
-                                          //   whilistbloc.add(AddToWhislist(cart));
-                                          //   ToastMessage(
-                                          //           context: context,
-                                          //           message:
-                                          //               'Success Add To Whislist',
-                                          //           type: ToastificationType
-                                          //               .success)
-                                          //       .toastCustom();
-                                          //   Navigator.pop(context);
-                                          // }
+                                          final WhislistModel whislist =
+                                              WhislistModel(
+                                                  id: product.id,
+                                                  title: product.title,
+                                                  description:
+                                                      product.description,
+                                                  category: product.category,
+                                                  image: product.image,
+                                                  price: product.price,
+                                                  rating: product.rating,
+                                                  qty: 1);
+                                          final whilistbloc =
+                                              context.read<WhislistBloc>();
+                                          whilistbloc
+                                              .add(AddToWhislist(whislist));
                                         },
                                         child: Text(
                                           'Add to Favorite',
@@ -316,8 +301,6 @@ class ProductDetailPage extends StatelessWidget {
                                           final cartbloc =
                                               context.read<CartBloc>();
                                           cartbloc.add(AddToCart(cart));
-
-                                          Navigator.pop(context);
                                         },
                                         child: Text(
                                           'Add to card',

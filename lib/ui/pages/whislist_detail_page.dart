@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/whislist_bloc/whislist_bloc.dart';
-import 'package:kelompok9_toko_online/models/cart_model.dart';
+import 'package:kelompok9_toko_online/models/whislist_model.dart';
 import 'package:kelompok9_toko_online/shared/theme.dart';
 import 'package:kelompok9_toko_online/ui/widgets/toast_message.dart';
 import 'package:toastification/toastification.dart';
@@ -9,7 +9,7 @@ import 'package:toastification/toastification.dart';
 class WhislistDetailPage extends StatelessWidget {
   const WhislistDetailPage({super.key, required this.product});
 
-  final CartModel product;
+  final WhislistModel product;
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +131,7 @@ class WhislistDetailPage extends StatelessWidget {
                               onPressed: () {
                                 context
                                     .read<WhislistBloc>()
-                                    .add(RemoreWhislist(product));
+                                    .add(RemoveWhislist(product));
                                 Navigator.pushNamedAndRemoveUntil(
                                   context,
                                   '/home',

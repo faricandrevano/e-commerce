@@ -34,7 +34,7 @@ class _LayoutNavigationState extends State<LayoutNavigation> {
   @override
   Widget build(BuildContext context) {
     final countCart = context.watch<CartBloc>().state;
-    final countWhislist = context.watch<WhislistBloc>();
+    final countWhislist = context.watch<WhislistBloc>().state;
     return Scaffold(
       backgroundColor: whiteColor,
       body: page[currentIndex],
@@ -54,7 +54,9 @@ class _LayoutNavigationState extends State<LayoutNavigation> {
           ),
           BottomNavigationBarItem(
             icon: Badge(
-              label: Text(countWhislist.state.WhislistItems.length.toString()),
+              label: Text(countWhislist is WhislistUpdateData
+                  ? countWhislist.data.length.toString()
+                  : '0'),
               child: Image.asset('assets/icon/ic_menu_wishlist.png'),
             ),
             label: 'Whislist',

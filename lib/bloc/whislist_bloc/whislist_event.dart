@@ -9,14 +9,16 @@ sealed class WhislistEvent extends Equatable {
 
 class AddToWhislist extends WhislistEvent {
   const AddToWhislist(this.product);
-  final CartModel product;
+  final WhislistModel product;
   @override
   List<Object> get props => [product];
 }
 
-class RemoreWhislist extends WhislistEvent {
-  final CartModel product;
-  const RemoreWhislist(this.product);
+class RemoveWhislist extends WhislistEvent {
+  final WhislistModel product;
+  const RemoveWhislist(this.product);
   @override
   List<Object> get props => [product];
 }
+
+class FetchWhislist extends WhislistEvent {}
