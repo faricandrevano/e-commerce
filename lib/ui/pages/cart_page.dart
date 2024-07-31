@@ -4,15 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/cart_bloc/cart_bloc.dart';
 import 'package:kelompok9_toko_online/helper/flutter_notification.dart';
-import 'package:kelompok9_toko_online/models/cart_model.dart';
 import 'package:kelompok9_toko_online/shared/theme.dart';
 import 'package:kelompok9_toko_online/ui/pages/detail_order_page.dart';
 import 'package:kelompok9_toko_online/ui/widgets/custom_filled_button.dart';
 import 'package:kelompok9_toko_online/ui/widgets/toast_message.dart';
 import 'package:toastification/toastification.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
+
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<CartBloc>().add(FetchCart());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +30,7 @@ class CartPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
-          if (state.cartItems.isEmpty) {
+          if (state is CartInitial) {
             return SizedBox(
               width: double.infinity,
               child: Column(
@@ -57,8 +67,8 @@ class CartPage extends StatelessWidget {
                 ],
               ),
             );
-          } else {
-            final List<CartModel> data = state.cartItems;
+          } else if (state is CartUpdateData) {
+            final List data = state.data;
             return Column(
               children: [
                 Expanded(
@@ -116,8 +126,7 @@ class CartPage extends StatelessWidget {
                                       TextButton(
                                         onPressed: () {
                                           context.read<CartBloc>().add(
-                                              RemoveCart(
-                                                  state.cartItems[index]));
+                                              RemoveCart(state.data[index]));
                                           Navigator.pop(context);
                                           ToastMessage(
                                             context: context,
@@ -183,6 +192,7 @@ class CartPage extends StatelessWidget {
               ],
             );
           }
+          return Container();
         },
       ),
     );

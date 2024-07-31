@@ -22,3 +22,5 @@ class RemoveCart extends CartEvent {
 }
 
 class EmptyCart extends CartEvent {}
+
+class FetchCart extends CartEvent {}

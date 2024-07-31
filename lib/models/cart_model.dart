@@ -1,5 +1,5 @@
 class CartModel {
-  final String userId;
+  final String id;
   final String title;
   final String description;
   final String category;
@@ -9,7 +9,7 @@ class CartModel {
   final double qty;
 
   CartModel(
-      {required this.userId,
+      {required this.id,
       required this.title,
       required this.description,
       required this.category,
@@ -20,7 +20,7 @@ class CartModel {
 
   factory CartModel.fromJson(Map<String, dynamic> json) {
     return CartModel(
-        userId: json['userId'],
+        id: json['id'],
         title: json['title'],
         description: json['description'],
         category: json['category'],

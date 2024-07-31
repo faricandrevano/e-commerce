@@ -48,7 +48,7 @@ class ProductBar extends StatelessWidget {
               },
               child: Badge(
                 label: Text(
-                  countCart.state.cartItems.length.toString(),
+                  countCart.totalItems.toString(),
                 ),
                 child: Image.asset('assets/icon/ic_menu_shopping-cart.png'),
               ),

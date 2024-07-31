@@ -60,7 +60,7 @@ class _LayoutNavigationState extends State<LayoutNavigation> {
           ),
           BottomNavigationBarItem(
             icon: Badge(
-              label: Text(countCart.state.cartItems.length.toString()),
+              label: Text(countCart.totalItems.toString()),
               child: Image.asset('assets/icon/ic_menu_pesanan.png'),
             ),
             label: 'Order',
