@@ -20,6 +20,11 @@ final class CartUpdateData extends CartState {
   List<Object> get props => [data];
 }
 
+final class CartSuccess extends CartState {
+  @override
+  List<Object> get props => [];
+}
+
 final class CartFailed extends CartState {
   CartFailed(this.error);
   final String error;

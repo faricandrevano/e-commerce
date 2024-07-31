@@ -28,11 +28,12 @@ class _LayoutNavigationState extends State<LayoutNavigation> {
   void initState() {
     super.initState();
     context.read<UserBloc>().add(UserGetProfileEvent());
+    context.read<CartBloc>().add(FetchCart());
   }
 
   @override
   Widget build(BuildContext context) {
-    final countCart = context.watch<CartBloc>();
+    final countCart = context.watch<CartBloc>().state;
     final countWhislist = context.watch<WhislistBloc>();
     return Scaffold(
       backgroundColor: whiteColor,
@@ -60,7 +61,9 @@ class _LayoutNavigationState extends State<LayoutNavigation> {
           ),
           BottomNavigationBarItem(
             icon: Badge(
-              label: Text(countCart.totalItems.toString()),
+              label: countCart is CartUpdateData
+                  ? Text(countCart.data.length.toString())
+                  : const Text('0'),
               child: Image.asset('assets/icon/ic_menu_pesanan.png'),
             ),
             label: 'Order',

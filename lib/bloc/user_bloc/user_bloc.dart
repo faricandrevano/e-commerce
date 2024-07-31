@@ -85,6 +85,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (event is UserLogoutEvent) {
           try {
             SharedPreferences prefs = await SharedPreferences.getInstance();
+            await GoogleSignIn().signOut();
             await prefs.setBool('isLogin', false);
             emit(UserLogout());
           } catch (e) {
@@ -96,6 +97,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           try {
             final GoogleSignInAccount? googleUser =
                 await GoogleSignIn().signIn();
+            if (googleUser == null) {
+              emit(UserErrorData(error: 'Silahkan Coba Lagi'));
+            }
             final GoogleSignInAuthentication? googleAuth =
                 await googleUser?.authentication;
             final credential = GoogleAuthProvider.credential(

@@ -8,7 +8,7 @@ class ProductBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final countCart = context.watch<CartBloc>();
+    final countCart = context.watch<CartBloc>().state;
     return Container(
       decoration: const BoxDecoration(
         color: whiteColor,
@@ -41,17 +41,17 @@ class ProductBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 20),
-          Badge(
-            child: InkWell(
-              onTap: () {
-                // Handle onTap event
-              },
-              child: Badge(
-                label: Text(
-                  countCart.totalItems.toString(),
-                ),
-                child: Image.asset('assets/icon/ic_menu_shopping-cart.png'),
+          InkWell(
+            onTap: () {
+              // Handle onTap event
+            },
+            child: Badge(
+              label: Text(
+                countCart is CartUpdateData
+                    ? countCart.data.length.toString()
+                    : '0',
               ),
+              child: Image.asset('assets/icon/ic_menu_shopping-cart.png'),
             ),
           ),
         ],

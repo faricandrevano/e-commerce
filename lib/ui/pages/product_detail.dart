@@ -67,12 +67,14 @@ class ProductDetailPage extends StatelessWidget {
       body: BlocListener<CartBloc, CartState>(
         listener: (context, state) {
           if (state is CartFailed) {
+            context.read<CartBloc>().add(FetchCart());
             ToastMessage(
                     context: context,
                     message: state.error.toString(),
                     type: ToastificationType.error)
                 .toastCustom();
-          } else if (state is CartUpdateData) {
+          } else if (state is CartSuccess) {
+            context.read<CartBloc>().add(FetchCart());
             ToastMessage(
                     context: context,
                     message: 'Success Add To cart',

@@ -9,32 +9,25 @@ part 'cart_state.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   CollectionReference carts = FirebaseFirestore.instance.collection('carts');
-  int totalItems = 0;
-  // double test;
+
   CartBloc() : super(CartInitial()) {
     on<CartEvent>((event, emit) async {
       if (event is AddToCart) {
         try {
           DocumentReference cartRef =
               carts.doc(FirebaseAuth.instance.currentUser?.uid);
-          await cartRef
+          QuerySnapshot doubleItems = await cartRef
               .collection('items')
-              .add(event.product as Map<String, dynamic>);
-          CollectionReference itemsCart = carts
-              .doc(FirebaseAuth.instance.currentUser?.uid)
-              .collection('items');
-          QuerySnapshot querySnapshot = await itemsCart.get();
-          double totalPrice = 0.0;
-          final List<CartModel> itemsData = querySnapshot.docs.map((doc) {
-            final data = doc.data() as Map<String, dynamic>;
-            double price = data['price'] ?? 0.0;
-            int qty = data['quantity'] ?? 0;
-            totalPrice = qty * price;
-          }).toList() as List<CartModel>;
-          totalItems = querySnapshot.docs.length;
-          debugPrint(totalPrice.toString());
-          emit(CartUpdateData(data: itemsData));
+              .where('id', isEqualTo: event.product.id)
+              .get();
+          if (doubleItems.docs.length != 1) {
+            await cartRef.collection('items').add(event.product.toMap());
+            emit(CartSuccess());
+          } else {
+            emit(CartFailed('Product Sudah Ditambahkan dalam pesanan'));
+          }
         } catch (e) {
+          debugPrint(e.toString());
           emit(CartFailed(e.toString()));
         }
       }
@@ -43,18 +36,34 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           DocumentReference cartRef =
               carts.doc(FirebaseAuth.instance.currentUser?.uid);
           QuerySnapshot itemsCart = await cartRef.collection('items').get();
-          final List<CartModel> resultData = itemsCart.docs.map((doc) {
-            return CartModel.fromJson(doc.data() as Map<String, dynamic>);
-          }).toList();
-          emit(CartUpdateData(data: resultData));
+          if (itemsCart.docs.isEmpty) {
+            emit(CartInitial());
+          } else {
+            final List<CartModel> resultData = itemsCart.docs.map((doc) {
+              return CartModel.fromJson(doc.data() as Map<String, dynamic>);
+            }).toList();
+            emit(CartUpdateData(data: resultData));
+          }
         } catch (e) {
           emit(CartFailed(e.toString()));
         }
       }
       if (event is RemoveCart) {
-        // final updateCart = List<CartModel>.from(state.cartItems)
-        //   ..remove(event.product);
-        // emit(CartState(updateCart));
+        try {
+          DocumentReference cartRef =
+              carts.doc(FirebaseAuth.instance.currentUser?.uid);
+          QuerySnapshot deleteData = await cartRef
+              .collection('items')
+              .where('id', isEqualTo: event.product.id)
+              .get();
+          if (deleteData.docs.isNotEmpty) {
+            DocumentSnapshot docSnaphost = deleteData.docs.first;
+            await docSnaphost.reference.delete();
+            emit(CartSuccess());
+          }
+        } catch (e) {
+          emit(CartFailed(e.toString()));
+        }
       }
       if (event is EmptyCart) {
         // final updateCart = List<CartModel>.from(state.cartItems)..clear();

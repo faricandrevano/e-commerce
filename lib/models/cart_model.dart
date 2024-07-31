@@ -26,7 +26,19 @@ class CartModel {
         category: json['category'],
         image: json['image'],
         price: json['price'].toDouble(),
-        rating: json['rating']['rate'].toDouble(),
+        rating: json['rating'].toDouble(),
         qty: json['qty'].toDouble());
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'category': category,
+      'image': image,
+      'price': price,
+      'rating': rating,
+      'qty': qty,
+    };
   }
 }
