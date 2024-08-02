@@ -19,6 +19,7 @@ final class UserLoadingData extends UserState {
   @override
   List<Object> get props => [isLoading];
 }
+
 final class UserSignInLoading extends UserState {
   UserSignInLoading(this.isLoading);
   final bool isLoading;
@@ -53,6 +54,20 @@ final class UserGetProfile extends UserState {
 }
 
 final class UserLogout extends UserState {
+  @override
+  List<Object> get props => [];
+}
+
+final class UserProfileUploaded extends UserState {
+  final String imageUrl;
+  UserProfileUploaded(this.imageUrl);
+  @override
+  List<Object> get props => [];
+}
+
+final class UserProfilePick extends UserState {
+  final String imageUrl;
+  UserProfilePick(this.imageUrl);
   @override
   List<Object> get props => [];
 }

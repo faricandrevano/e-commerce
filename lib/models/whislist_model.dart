@@ -6,7 +6,6 @@ class WhislistModel {
       required this.id,
       required this.image,
       required this.price,
-      required this.qty,
       required this.rating});
   final String id;
   final String title;
@@ -15,7 +14,6 @@ class WhislistModel {
   final String image;
   final double price;
   final double rating;
-  final double qty;
   factory WhislistModel.fromJson(Map<String, dynamic> json) {
     return WhislistModel(
       title: json['title'],
@@ -24,7 +22,6 @@ class WhislistModel {
       id: json['id'],
       image: json['image'],
       price: json['price'],
-      qty: json['qty'],
       rating: json['rating'],
     );
   }
@@ -37,7 +34,6 @@ class WhislistModel {
       'image': image,
       'price': price,
       'rating': rating,
-      'qty': qty,
     };
   }
 }

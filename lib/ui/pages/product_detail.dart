@@ -65,26 +65,47 @@ class ProductDetailPage extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocListener<CartBloc, CartState>(
-        listener: (context, state) {
-          if (state is CartFailed) {
-            context.read<CartBloc>().add(FetchCart());
-            ToastMessage(
-                    context: context,
-                    message: state.error.toString(),
-                    type: ToastificationType.error)
-                .toastCustom();
-            Navigator.pop(context);
-          } else if (state is CartSuccess) {
-            context.read<CartBloc>().add(FetchCart());
-            ToastMessage(
-                    context: context,
-                    message: 'Success Add To cart',
-                    type: ToastificationType.success)
-                .toastCustom();
-            Navigator.pop(context);
-          }
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<CartBloc, CartState>(
+            listener: (context, state) {
+              if (state is CartFailed) {
+                context.read<CartBloc>().add(FetchCart());
+                ToastMessage(
+                        context: context,
+                        message: state.error.toString(),
+                        type: ToastificationType.error)
+                    .toastCustom();
+              } else if (state is CartSuccess) {
+                context.read<CartBloc>().add(FetchCart());
+                ToastMessage(
+                        context: context,
+                        message: 'Success Add To cart',
+                        type: ToastificationType.success)
+                    .toastCustom();
+              }
+            },
+          ),
+          BlocListener<WhislistBloc, WhislistState>(
+            listener: (context, state) {
+              if (state is WhislistFailed) {
+                context.read<WhislistBloc>().add(FetchWhislist());
+                ToastMessage(
+                        context: context,
+                        message: state.error.toString(),
+                        type: ToastificationType.error)
+                    .toastCustom();
+              } else if (state is WhislistSuccess) {
+                context.read<WhislistBloc>().add(FetchWhislist());
+                ToastMessage(
+                        context: context,
+                        message: 'Success Add To Whislist',
+                        type: ToastificationType.success)
+                    .toastCustom();
+              }
+            },
+          )
+        ],
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -185,19 +206,19 @@ class ProductDetailPage extends StatelessWidget {
                                         onPressed: () {
                                           final WhislistModel whislist =
                                               WhislistModel(
-                                                  id: product.id,
-                                                  title: product.title,
-                                                  description:
-                                                      product.description,
-                                                  category: product.category,
-                                                  image: product.image,
-                                                  price: product.price,
-                                                  rating: product.rating,
-                                                  qty: 1);
+                                            id: product.id,
+                                            title: product.title,
+                                            description: product.description,
+                                            category: product.category,
+                                            image: product.image,
+                                            price: product.price,
+                                            rating: product.rating,
+                                          );
                                           final whilistbloc =
                                               context.read<WhislistBloc>();
                                           whilistbloc
                                               .add(AddToWhislist(whislist));
+                                          Navigator.pop(context);
                                         },
                                         child: Text(
                                           'Add to Favorite',
@@ -266,7 +287,6 @@ class ProductDetailPage extends StatelessWidget {
                                       thickness: 0.5,
                                     ),
                                     const SizedBox(height: 20),
-                                    const SizedBox(height: 20),
                                     Text(
                                       'Total Belanja',
                                       style: blackColorStyle.copyWith(
@@ -301,6 +321,7 @@ class ProductDetailPage extends StatelessWidget {
                                           final cartbloc =
                                               context.read<CartBloc>();
                                           cartbloc.add(AddToCart(cart));
+                                          Navigator.pop(context);
                                         },
                                         child: Text(
                                           'Add to card',

@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kelompok9_toko_online/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,8 +14,9 @@ part 'user_event.dart';
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  // final UserService userService;
-  UserBloc() : super(UserInitialState()) {
+  final FirebaseStorage storage;
+  final ImagePicker picker;
+  UserBloc(this.picker, this.storage) : super(UserInitialState()) {
     on<UserEvent>(
       (event, emit) async {
         if (event is UserCreateEvent) {
@@ -54,38 +60,77 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             }
           }
         }
-        // if (event is UserUpdateEvent) {
-        //   emit(UserLoadingData(true));
-        //   try {
-        //     FirebaseAuth.instance.authStateChanges().listen((User? user) async {
-        //       await user?.updateDisplayName(event.name);
-        //     });
-        //     emit(UserLoadingData(false));
-        //   } catch (e) {
-        //     emit(UserErrorData(error: e.toString()));
-        //   }
-        // }
-        if (event is UserGetProfileEvent) {
+        if (event is UserUpdateEvent) {
+          emit(UserLoadingData(true));
           try {
-            FirebaseAuth.instance.authStateChanges().listen((User? user) {
-              emit(
-                UserGetProfile(
-                  hasil: UserModel(
-                    name: user?.displayName,
-                    email: user?.email,
-                    password: user?.uid,
-                  ),
-                ),
-              );
+            FirebaseAuth.instance.authStateChanges().listen((User? user) async {
+              await user?.updateDisplayName(event.name);
+              await user?.updatePhotoURL('');
             });
-          } on FirebaseAuthException catch (e) {
-            throw Exception(e.toString());
+            emit(UserLoadingData(false));
+          } catch (e) {
+            emit(UserErrorData(error: e.toString()));
           }
         }
+        if (event is UserGetProfileEvent) {
+          try {
+            final user = FirebaseAuth.instance.currentUser;
+            if (user != null) {
+              final ref = storage
+                  .ref()
+                  .child('profile_pictures')
+                  .child('${user.uid}.jpg');
+
+              try {
+                final downloadUrl = await ref.getDownloadURL();
+                emit(
+                  UserGetProfile(
+                    hasil: UserModel(
+                      name: user.displayName,
+                      email: user.email,
+                      password: user.uid,
+                      avatar: downloadUrl,
+                    ),
+                  ),
+                );
+              } catch (e) {
+                if (e is FirebaseException && e.code == 'object-not-found') {
+                  emit(
+                    UserGetProfile(
+                      hasil: UserModel(
+                        name: user.displayName,
+                        email: user.email,
+                        password: user.uid,
+                      ),
+                    ),
+                  );
+                } else {
+                  debugPrint('Terjadi kesalahan: $e');
+                  emit(
+                    UserGetProfile(
+                      hasil: UserModel(
+                        name: user.displayName,
+                        email: user.email,
+                        password: user.uid,
+                        avatar: '',
+                      ),
+                    ),
+                  );
+                }
+              }
+            } else {
+              debugPrint('User is not logged in');
+            }
+          } catch (e) {
+            debugPrint(e.toString());
+          }
+        }
+
         if (event is UserLogoutEvent) {
           try {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             await GoogleSignIn().signOut();
+            await FirebaseAuth.instance.signOut();
             await prefs.setBool('isLogin', false);
             emit(UserLogout());
           } catch (e) {
@@ -112,6 +157,26 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             emit(UserLoginData());
           } on FirebaseAuthException catch (e) {
             emit(UserErrorData(error: e.code));
+          }
+        }
+        if (event is UserUploadImage) {
+          try {
+            final pickedFile =
+                await picker.pickImage(source: ImageSource.camera);
+            if (pickedFile != null) {
+              File file = File(pickedFile.path);
+              final ref = storage
+                  .ref()
+                  .child('profile_pictures')
+                  .child('${FirebaseAuth.instance.currentUser?.uid}.jpg');
+              await ref.putFile(file);
+              final downloadUrl = await ref.getDownloadURL();
+              emit(UserProfileUploaded(downloadUrl));
+            } else {
+              emit(UserErrorData(error: 'No image selected'));
+            }
+          } catch (e) {
+            emit(UserErrorData(error: 'Failed to upload image'));
           }
         }
       },

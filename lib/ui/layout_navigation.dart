@@ -29,6 +29,7 @@ class _LayoutNavigationState extends State<LayoutNavigation> {
     super.initState();
     context.read<UserBloc>().add(UserGetProfileEvent());
     context.read<CartBloc>().add(FetchCart());
+    context.read<WhislistBloc>().add(FetchWhislist());
   }
 
   @override

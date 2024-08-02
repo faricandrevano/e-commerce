@@ -15,14 +15,14 @@ class WhislistBloc extends Bloc<WhislistEvent, WhislistState> {
     on<WhislistEvent>((event, emit) async {
       if (event is AddToWhislist) {
         try {
-          DocumentReference cartRef =
+          DocumentReference whislistRef =
               whislists.doc(FirebaseAuth.instance.currentUser?.uid);
-          QuerySnapshot doubleItems = await cartRef
+          QuerySnapshot doubleItems = await whislistRef
               .collection('items')
               .where('id', isEqualTo: event.product.id)
               .get();
           if (doubleItems.docs.length != 1) {
-            await cartRef.collection('items').add(event.product.toMap());
+            await whislistRef.collection('items').add(event.product.toMap());
             emit(WhislistSuccess());
           } else {
             emit(WhislistFailed('Product Sudah Ditambahkan dalam pesanan'));
@@ -34,13 +34,14 @@ class WhislistBloc extends Bloc<WhislistEvent, WhislistState> {
       }
       if (event is FetchWhislist) {
         try {
-          DocumentReference cartRef =
+          DocumentReference whilistRef =
               whislists.doc(FirebaseAuth.instance.currentUser?.uid);
-          QuerySnapshot itemsCart = await cartRef.collection('items').get();
-          if (itemsCart.docs.isEmpty) {
+          QuerySnapshot itemWhislist =
+              await whilistRef.collection('items').get();
+          if (itemWhislist.docs.isEmpty) {
             emit(WhilistInitial());
           } else {
-            final List<WhislistModel> resultData = itemsCart.docs.map((doc) {
+            final List<WhislistModel> resultData = itemWhislist.docs.map((doc) {
               return WhislistModel.fromJson(doc.data() as Map<String, dynamic>);
             }).toList();
             emit(WhislistUpdateData(data: resultData));
@@ -51,9 +52,9 @@ class WhislistBloc extends Bloc<WhislistEvent, WhislistState> {
       }
       if (event is RemoveWhislist) {
         try {
-          DocumentReference cartRef =
+          DocumentReference whislistRef =
               whislists.doc(FirebaseAuth.instance.currentUser?.uid);
-          QuerySnapshot deleteData = await cartRef
+          QuerySnapshot deleteData = await whislistRef
               .collection('items')
               .where('id', isEqualTo: event.product.id)
               .get();

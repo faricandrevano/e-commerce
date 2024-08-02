@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '963886785612',
     projectId: 'e-commerce-16d4b',
     storageBucket: 'e-commerce-16d4b.appspot.com',
+    androidClientId: '963886785612-cshcfkvuv0ceuk6pc5hqeg4j98lj77fd.apps.googleusercontent.com',
     iosClientId: '963886785612-hi6p5bdec1ggdjdfg072vp6pqhfu7qst.apps.googleusercontent.com',
     iosBundleId: 'com.example.kelompok9TokoOnline',
   );
@@ -73,6 +74,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '963886785612',
     projectId: 'e-commerce-16d4b',
     storageBucket: 'e-commerce-16d4b.appspot.com',
+    androidClientId: '963886785612-cshcfkvuv0ceuk6pc5hqeg4j98lj77fd.apps.googleusercontent.com',
     iosClientId: '963886785612-hi6p5bdec1ggdjdfg072vp6pqhfu7qst.apps.googleusercontent.com',
     iosBundleId: 'com.example.kelompok9TokoOnline',
   );

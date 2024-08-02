@@ -9,23 +9,25 @@ import 'package:toastification/toastification.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final avatar = context.watch<UserBloc>().state;
     return SingleChildScrollView(
       child: BlocListener<UserBloc, UserState>(
         listener: (context, state) {
-          if (state is UserUpdateLoaded) {
+          if (state is UserProfileUploaded) {
+            context.read<UserBloc>().add(UserGetProfileEvent());
             ToastMessage(
                     context: context,
                     type: ToastificationType.success,
                     message: 'Success Update Profile')
                 .toastCustom();
           } else if (state is UserErrorData) {
+            context.read<UserBloc>().add(UserGetProfileEvent());
             ToastMessage(
                     context: context,
                     type: ToastificationType.error,
-                    message: 'Failed Update Profile')
+                    message: state.error)
                 .toastCustom();
           } else if (state is UserLogout) {
             ToastMessage(
@@ -38,15 +40,83 @@ class ProfilePage extends StatelessWidget {
         },
         child: Container(
           padding:
-              const EdgeInsets.only(top: 120, left: 25, right: 25, bottom: 20),
+              const EdgeInsets.only(top: 80, left: 25, right: 25, bottom: 20),
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Profile & Password',
-                style: blackColorStyle.copyWith(fontWeight: bold, fontSize: 25),
+              // Text(
+              //   'Profile User',
+              //   style: blackColorStyle.copyWith(fontWeight: bold, fontSize: 25),
+              // ),
+              const SizedBox(
+                height: 20,
               ),
+              BlocBuilder<UserBloc, UserState>(
+                builder: (context, state) {
+                  if (state is UserProfileUploaded) {
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundImage: avatar is UserGetProfile
+                                ? NetworkImage(avatar.hasil.avatar.toString())
+                                : const AssetImage('assets/images/profile.jpg'),
+                          ),
+                          Positioned(
+                            bottom: -5,
+                            right: -30,
+                            child: RawMaterialButton(
+                              onPressed: () {},
+                              elevation: 2.0,
+                              fillColor: const Color(0xFFF5F6F9),
+                              shape: const CircleBorder(),
+                              child: const Icon(Icons.camera_alt_outlined),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                  return Align(
+                    alignment: Alignment.center,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: avatar is UserGetProfile
+                              ? NetworkImage(avatar.hasil.avatar.toString())
+                              : const AssetImage('assets/images/profile.jpg'),
+                        ),
+                        Positioned(
+                          bottom: -5,
+                          right: -30,
+                          child: RawMaterialButton(
+                            onPressed: () {
+                              context.read<UserBloc>().add(UserUploadImage());
+                            },
+                            elevation: 2.0,
+                            fillColor: const Color(0xFFF5F6F9),
+                            shape: const CircleBorder(),
+                            child: const Icon(Icons.camera_alt_outlined),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
+
+              // CircleAvatar(
+              //   backgroundImage: NetworkImage(avatar is UserGetProfile
+              //       ? avatar.hasil.avatar.toString()
+              //       : ''),
+              //   radius: 40,
+              // ),
               const SizedBox(
                 height: 20,
               ),
@@ -78,53 +148,6 @@ class ProfilePage extends StatelessWidget {
                       children: [
                         form(controllerName, controllerEmail,
                             controllerPassword),
-                        BlocBuilder<UserBloc, UserState>(
-                          builder: (context, state) {
-                            return CustomFilledButton(
-                              key: const Key('updateButton'),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text(
-                                          'Are you sure update profile?'),
-                                      // content: const Text('Yakin?'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            context.read<UserBloc>().add(
-                                                  UserUpdateEvent(
-                                                    email:
-                                                        controllerEmail!.text,
-                                                    name: controllerName!.text,
-                                                    password:
-                                                        controllerPassword!
-                                                            .text,
-                                                  ),
-                                                );
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('Yes'),
-                                        )
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              text: Text(
-                                'Update',
-                                style: whiteTextStyle,
-                              ),
-                            );
-                          },
-                        ),
                       ],
                     );
                   } else if (state is UserLoadingData) {
@@ -210,30 +233,6 @@ class ProfilePage extends StatelessWidget {
           labelText: 'Email',
         ),
         const SizedBox(height: 30),
-        CustomTextField(
-          contoller: controllerPassword,
-          hintText: '',
-          labelText: 'Password',
-          obscureText: true,
-        ),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            const Icon(
-              Icons.warning_outlined,
-              color: Color(0xff838589),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              'Kata sandi harus 6 karakter atau lebih',
-              style: greyColorStyle.copyWith(
-                fontWeight: regular,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
       ],
     );
   }

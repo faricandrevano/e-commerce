@@ -1,12 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kelompok9_toko_online/bloc/cart_bloc/cart_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/product_bloc/product_bloc.dart';
 
 import 'package:kelompok9_toko_online/bloc/user_bloc/user_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/whislist_bloc/whislist_bloc.dart';
 import 'package:kelompok9_toko_online/firebase_options.dart';
+import 'package:kelompok9_toko_online/helper/fcm.dart';
 import 'package:kelompok9_toko_online/helper/flutter_notification.dart';
 import 'package:kelompok9_toko_online/ui/layout_navigation.dart';
 import 'package:kelompok9_toko_online/ui/pages/login_page.dart';
@@ -19,6 +22,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Fcm().init();
   runApp(const MyApp());
 }
 
@@ -30,7 +34,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<UserBloc>(
-          create: (context) => UserBloc(),
+          create: (context) =>
+              UserBloc(ImagePicker(), FirebaseStorage.instance),
         ),
         BlocProvider<ProductBloc>(
           create: (context) => ProductBloc(),
