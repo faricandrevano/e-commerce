@@ -54,43 +54,16 @@ class ProfilePage extends StatelessWidget {
               ),
               BlocBuilder<UserBloc, UserState>(
                 builder: (context, state) {
-                  if (state is UserProfileUploaded) {
-                    return Align(
-                      alignment: Alignment.center,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          CircleAvatar(
-                            radius: 50,
-                            backgroundImage: avatar is UserGetProfile
-                                ? NetworkImage(avatar.hasil.avatar.toString())
-                                : const AssetImage('assets/images/profile.jpg'),
-                          ),
-                          Positioned(
-                            bottom: -5,
-                            right: -30,
-                            child: RawMaterialButton(
-                              onPressed: () {},
-                              elevation: 2.0,
-                              fillColor: const Color(0xFFF5F6F9),
-                              shape: const CircleBorder(),
-                              child: const Icon(Icons.camera_alt_outlined),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  }
                   return Align(
                     alignment: Alignment.center,
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: 50,
-                          backgroundImage: avatar is UserGetProfile
-                              ? NetworkImage(avatar.hasil.avatar.toString())
-                              : const AssetImage('assets/images/profile.jpg'),
+                          backgroundImage: AssetImage(
+                            'assets/images/profile.jpg',
+                          ),
                         ),
                         Positioned(
                           bottom: -5,
@@ -148,20 +121,6 @@ class ProfilePage extends StatelessWidget {
                       children: [
                         form(controllerName, controllerEmail,
                             controllerPassword),
-                      ],
-                    );
-                  } else if (state is UserLoadingData) {
-                    return Column(
-                      children: [
-                        form(controllerName, controllerEmail,
-                            controllerPassword),
-                        BlocBuilder<UserBloc, UserState>(
-                          builder: (context, state) {
-                            return const CustomFilledButton(
-                              text: CircularProgressIndicator(),
-                            );
-                          },
-                        ),
                       ],
                     );
                   }

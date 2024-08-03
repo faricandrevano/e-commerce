@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/product_bloc/product_bloc.dart';
-import 'package:kelompok9_toko_online/helper/fcm.dart';
-import 'package:kelompok9_toko_online/helper/flutter_notification.dart';
 import 'package:kelompok9_toko_online/ui/pages/search_page.dart';
 import 'package:kelompok9_toko_online/ui/widgets/banner_carousel.dart';
 import 'package:kelompok9_toko_online/ui/widgets/categories.dart';

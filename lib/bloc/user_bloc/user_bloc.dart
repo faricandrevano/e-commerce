@@ -75,52 +75,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (event is UserGetProfileEvent) {
           try {
             final user = FirebaseAuth.instance.currentUser;
-            if (user != null) {
-              final ref = storage
-                  .ref()
-                  .child('profile_pictures')
-                  .child('${user.uid}.jpg');
-
-              try {
-                final downloadUrl = await ref.getDownloadURL();
-                emit(
-                  UserGetProfile(
-                    hasil: UserModel(
-                      name: user.displayName,
-                      email: user.email,
-                      password: user.uid,
-                      avatar: downloadUrl,
-                    ),
-                  ),
-                );
-              } catch (e) {
-                if (e is FirebaseException && e.code == 'object-not-found') {
-                  emit(
-                    UserGetProfile(
-                      hasil: UserModel(
-                        name: user.displayName,
-                        email: user.email,
-                        password: user.uid,
-                      ),
-                    ),
-                  );
-                } else {
-                  debugPrint('Terjadi kesalahan: $e');
-                  emit(
-                    UserGetProfile(
-                      hasil: UserModel(
-                        name: user.displayName,
-                        email: user.email,
-                        password: user.uid,
-                        avatar: '',
-                      ),
-                    ),
-                  );
-                }
-              }
-            } else {
-              debugPrint('User is not logged in');
-            }
+            emit(
+              UserGetProfile(
+                hasil: UserModel(
+                  name: user?.displayName,
+                  email: user?.email,
+                  password: user?.uid,
+                ),
+              ),
+            );
           } catch (e) {
             debugPrint(e.toString());
           }
@@ -160,9 +123,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           }
         }
         if (event is UserUploadImage) {
+          emit(UserLoadingData(true));
           try {
             final pickedFile =
-                await picker.pickImage(source: ImageSource.camera);
+                await picker.pickImage(source: ImageSource.gallery);
             if (pickedFile != null) {
               File file = File(pickedFile.path);
               final ref = storage
@@ -172,6 +136,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
               await ref.putFile(file);
               final downloadUrl = await ref.getDownloadURL();
               emit(UserProfileUploaded(downloadUrl));
+              emit(UserLoadingData(false));
             } else {
               emit(UserErrorData(error: 'No image selected'));
             }
