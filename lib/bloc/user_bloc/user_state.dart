@@ -57,17 +57,3 @@ final class UserLogout extends UserState {
   @override
   List<Object> get props => [];
 }
-
-final class UserProfileUploaded extends UserState {
-  final String imageUrl;
-  UserProfileUploaded(this.imageUrl);
-  @override
-  List<Object> get props => [];
-}
-
-final class UserProfilePick extends UserState {
-  final String imageUrl;
-  UserProfilePick(this.imageUrl);
-  @override
-  List<Object> get props => [];
-}

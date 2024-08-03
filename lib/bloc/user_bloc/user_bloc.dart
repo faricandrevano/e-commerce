@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -120,28 +118,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             emit(UserLoginData());
           } on FirebaseAuthException catch (e) {
             emit(UserErrorData(error: e.code));
-          }
-        }
-        if (event is UserUploadImage) {
-          emit(UserLoadingData(true));
-          try {
-            final pickedFile =
-                await picker.pickImage(source: ImageSource.gallery);
-            if (pickedFile != null) {
-              File file = File(pickedFile.path);
-              final ref = storage
-                  .ref()
-                  .child('profile_pictures')
-                  .child('${FirebaseAuth.instance.currentUser?.uid}.jpg');
-              await ref.putFile(file);
-              final downloadUrl = await ref.getDownloadURL();
-              emit(UserProfileUploaded(downloadUrl));
-              emit(UserLoadingData(false));
-            } else {
-              emit(UserErrorData(error: 'No image selected'));
-            }
-          } catch (e) {
-            emit(UserErrorData(error: 'Failed to upload image'));
           }
         }
       },

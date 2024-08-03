@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kelompok9_toko_online/bloc/profile_picture_bloc/profile_picture_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/user_bloc/user_bloc.dart';
 import 'package:kelompok9_toko_online/shared/theme.dart';
 import 'package:kelompok9_toko_online/ui/widgets/custom_filled_button.dart';
@@ -11,33 +12,47 @@ class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
   @override
   Widget build(BuildContext context) {
-    final avatar = context.watch<UserBloc>().state;
     return SingleChildScrollView(
-      child: BlocListener<UserBloc, UserState>(
-        listener: (context, state) {
-          if (state is UserProfileUploaded) {
-            context.read<UserBloc>().add(UserGetProfileEvent());
-            ToastMessage(
-                    context: context,
-                    type: ToastificationType.success,
-                    message: 'Success Update Profile')
-                .toastCustom();
-          } else if (state is UserErrorData) {
-            context.read<UserBloc>().add(UserGetProfileEvent());
-            ToastMessage(
-                    context: context,
-                    type: ToastificationType.error,
-                    message: state.error)
-                .toastCustom();
-          } else if (state is UserLogout) {
-            ToastMessage(
-                    context: context,
-                    message: 'Success Logout',
-                    type: ToastificationType.success)
-                .toastCustom();
-            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-          }
-        },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<UserBloc, UserState>(
+            listener: (context, state) {
+              if (state is UserErrorData) {
+                context.read<UserBloc>().add(UserGetProfileEvent());
+                ToastMessage(
+                        context: context,
+                        type: ToastificationType.error,
+                        message: state.error)
+                    .toastCustom();
+              } else if (state is UserLogout) {
+                ToastMessage(
+                        context: context,
+                        message: 'Success Logout',
+                        type: ToastificationType.success)
+                    .toastCustom();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/', (route) => false);
+              }
+            },
+          ),
+          BlocListener<ProfilePictureBloc, ProfilePictureState>(
+            listener: (context, state) {
+              if (state is ProfilePictureUpdate) {
+                ToastMessage(
+                        context: context,
+                        type: ToastificationType.success,
+                        message: 'Success Update Profile')
+                    .toastCustom();
+              } else if (state is ProfilePictureError) {
+                ToastMessage(
+                        context: context,
+                        type: ToastificationType.error,
+                        message: state.error)
+                    .toastCustom();
+              }
+            },
+          ),
+        ],
         child: Container(
           padding:
               const EdgeInsets.only(top: 80, left: 25, right: 25, bottom: 20),
@@ -52,28 +67,90 @@ class ProfilePage extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              BlocBuilder<UserBloc, UserState>(
+              BlocBuilder<ProfilePictureBloc, ProfilePictureState>(
                 builder: (context, state) {
+                  if (state is ProfilePictureUpdate) {
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          CircleAvatar(
+                            radius: 55,
+                            backgroundImage: NetworkImage(state.imageUrl),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: -30,
+                            child: RawMaterialButton(
+                              onPressed: () {
+                                context
+                                    .read<ProfilePictureBloc>()
+                                    .add(ProfilePickPicture());
+                              },
+                              padding: const EdgeInsets.all(10),
+                              fillColor: Colors.white,
+                              shape: const CircleBorder(),
+                              child: const Icon(Icons.camera_alt_outlined),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  } else if (state is ProfilePictureCurrent) {
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          CircleAvatar(
+                            radius: 55,
+                            backgroundImage: NetworkImage(state.imageUrl),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: -30,
+                            child: RawMaterialButton(
+                              onPressed: () {
+                                context
+                                    .read<ProfilePictureBloc>()
+                                    .add(ProfilePickPicture());
+                              },
+                              padding: const EdgeInsets.all(10),
+                              fillColor: Colors.white,
+                              shape: const CircleBorder(),
+                              child: const Icon(Icons.camera_alt_outlined),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  } else if (state is ProfileLoadingData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
                   return Align(
                     alignment: Alignment.center,
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
                         const CircleAvatar(
-                          radius: 50,
-                          backgroundImage: AssetImage(
-                            'assets/images/profile.jpg',
-                          ),
+                          radius: 55,
+                          backgroundImage:
+                              AssetImage('assets/images/profile.jpg'),
                         ),
                         Positioned(
-                          bottom: -5,
+                          bottom: 0,
                           right: -30,
                           child: RawMaterialButton(
                             onPressed: () {
-                              context.read<UserBloc>().add(UserUploadImage());
+                              context
+                                  .read<ProfilePictureBloc>()
+                                  .add(ProfilePickPicture());
                             },
-                            elevation: 2.0,
-                            fillColor: const Color(0xFFF5F6F9),
+                            padding: const EdgeInsets.all(10),
+                            fillColor: Colors.white,
                             shape: const CircleBorder(),
                             child: const Icon(Icons.camera_alt_outlined),
                           ),
@@ -81,15 +158,10 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                   );
+
+                  // return Container();
                 },
               ),
-
-              // CircleAvatar(
-              //   backgroundImage: NetworkImage(avatar is UserGetProfile
-              //       ? avatar.hasil.avatar.toString()
-              //       : ''),
-              //   radius: 40,
-              // ),
               const SizedBox(
                 height: 20,
               ),

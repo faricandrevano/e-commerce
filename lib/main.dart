@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kelompok9_toko_online/bloc/cart_bloc/cart_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/product_bloc/product_bloc.dart';
+import 'package:kelompok9_toko_online/bloc/profile_picture_bloc/profile_picture_bloc.dart';
 
 import 'package:kelompok9_toko_online/bloc/user_bloc/user_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/whislist_bloc/whislist_bloc.dart';
@@ -42,6 +43,8 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<CartBloc>(create: (context) => CartBloc()),
         BlocProvider<WhislistBloc>(create: (context) => WhislistBloc()),
+        BlocProvider<ProfilePictureBloc>(
+            create: (context) => ProfilePictureBloc())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

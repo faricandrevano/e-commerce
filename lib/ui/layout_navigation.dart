@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/cart_bloc/cart_bloc.dart';
+import 'package:kelompok9_toko_online/bloc/profile_picture_bloc/profile_picture_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/user_bloc/user_bloc.dart';
 import 'package:kelompok9_toko_online/bloc/whislist_bloc/whislist_bloc.dart';
 import 'package:kelompok9_toko_online/shared/theme.dart';
@@ -30,6 +31,7 @@ class _LayoutNavigationState extends State<LayoutNavigation> {
     context.read<UserBloc>().add(UserGetProfileEvent());
     context.read<CartBloc>().add(FetchCart());
     context.read<WhislistBloc>().add(FetchWhislist());
+    context.read<ProfilePictureBloc>().add(ProfileCurrentUser());
   }
 
   @override

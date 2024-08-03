@@ -49,8 +49,3 @@ class UserSignInGoogle extends UserEvent {
   @override
   List<Object> get props => [];
 }
-
-class UserUploadImage extends UserEvent {
-  @override
-  List<Object> get props => [];
-}
